@@ -1,7 +1,13 @@
+/**
+ * Represents a reference to an Umbraco entity by its ID.
+ */
 export interface UmbracoReferenceById {
     id: string;
 }
 
+/**
+ * Represents a user in the Umbraco system.
+ */
 export interface UmbracoUser 
 {
     id: string;
@@ -26,6 +32,9 @@ export interface UmbracoUser
     isAdmin: boolean;
 }
 
+/**
+ * Represents a user session in Umbraco, providing access to user information and permissions.
+ */
 export interface UserSession {
     user: UmbracoUser;
     hasAccessToSection(section: string): boolean;
