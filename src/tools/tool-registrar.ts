@@ -3,7 +3,7 @@ import { ToolDefinition } from "../types/tool-definition.js";
 import { withErrorHandling } from "../utils/tool-wrapper.js";
 import { glob } from 'glob';
 import path from 'path';
-import { fileURLToPath } from 'url';
+import { fileURLToPath, pathToFileURL } from 'url';
 import { z } from 'zod';
 import {ToolCallback} from "@modelcontextprotocol/sdk/server/mcp.js";
 
@@ -47,7 +47,8 @@ export async function discoverTools(): Promise<ToolDefinition<any>[]> {
         for (const file of toolFiles) {
             try {
                 const fullPath = path.resolve(toolsDir, file);
-                const module = await import(fullPath);
+                const fileUrl = pathToFileURL(fullPath).href;
+                const module = await import(fileUrl);
                 
                 const validationResult = ToolModuleSchema.safeParse(module);
                 

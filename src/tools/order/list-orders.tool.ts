@@ -13,9 +13,7 @@ export default {
     description: 'List orders with optional filtering and pagination',
     schema: listOrdersSchema.shape,
     
-    isAllowed: (session: UserSession) => {
-        return session.hasAccessToSection('commerce');
-    },
+    isAllowed: (session: UserSession) => session.hasAccessToSection('commerce'),
     
     handler: async (args, context) => {
         const { page, pageSize, status } = args;

@@ -1,17 +1,17 @@
 import { ToolCallback } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { ZodRawShape } from "zod";
 
-/**
- * Wraps a tool handler with common error handling logic
- */
 export function withErrorHandling<Args extends ZodRawShape | undefined = any>(
     toolName: string,
     handler: ToolCallback<Args>
 ): ToolCallback<Args> {
     return (async (args: any, context: any) => {
-        try {
+        try 
+        {
             return await handler(args, context);
-        } catch (error) {
+        } 
+        catch (error) 
+        {
             // Log the error
             console.error(`Error in tool ${toolName}:`, error);
             

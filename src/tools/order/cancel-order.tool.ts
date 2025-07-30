@@ -12,11 +12,7 @@ export default {
     description: 'Cancel an order with a reason',
     schema: cancelOrderSchema.shape,
     
-    isAllowed: (session: UserSession) => {
-        // Requires both commerce access and specific permission
-        return session.hasAccessToSection('commerce') && 
-               session.hasPermission('cancel_orders');
-    },
+    isAllowed: (session: UserSession) => session.hasAccessToSection('commerce'),
     
     handler: async (args, context) => {
         const { orderId, reason } = args;

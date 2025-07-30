@@ -11,9 +11,7 @@ const getOrderByIdTool = {
     description: 'Retrieve an order by its unique identifier',
     schema: getOrderByIdSchema.shape,
     
-    isAllowed: (session: UserSession) => {
-        return session.hasAccessToSection('commerce');
-    },
+    isAllowed: (session: UserSession) => session.hasAccessToSection('commerce'),
     
     handler: async (args, context) => {
         const { orderId } = args;
