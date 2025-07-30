@@ -9,7 +9,7 @@
   },
   "scripts": {
     "build": "tsc",
-    "inspect": "npx @modelcontextprotocol/inspector node build/index.js",
+    "inspect": "cross-env NODE_TLS_REJECT_UNAUTHORIZED=0 npx @modelcontextprotocol/inspector node build/index.js",
     "generate:api": "cross-env NODE_TLS_REJECT_UNAUTHORIZED=0 NODE_OPTIONS=\"--no-warnings\" openapi-ts --file openapi-ts.config.js"
   },
   "engines": {
@@ -22,11 +22,13 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@modelcontextprotocol/sdk": "^1.17.0"
+    "@modelcontextprotocol/sdk": "^1.17.0",
+    "glob": "^11.0.3"
   },
   "devDependencies": {
     "@hey-api/openapi-ts": "^0.80.1",
     "@modelcontextprotocol/inspector": "^0.16.2",
+    "@types/glob": "^8.1.0",
     "@types/node": "^24.1.0",
     "cross-env": "^10.0.0",
     "dotenv": "^17.2.1",

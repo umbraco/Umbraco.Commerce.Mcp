@@ -45,7 +45,7 @@ const main = async () => {
     };
     
     // Register all tools and resources
-    registerTools(toolContext);
+    await registerTools(toolContext);
 
     // Start receiving messages on stdin and sending messages on stdout
     const transport = new StdioServerTransport();

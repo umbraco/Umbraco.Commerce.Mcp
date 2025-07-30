@@ -97,7 +97,7 @@ export class UmbracoUserService {
             },
 
             hasAnyPermission(permissions: string[]): boolean {
-                return permissions.some(permission => this.hasPermission(permission));
+                return permissions.some(permission => user.fallbackPermissions.includes(permission));
             },
 
             isInGroup(groupAlias: string): boolean {
@@ -105,7 +105,7 @@ export class UmbracoUserService {
             },
 
             isInAnyGroup(groupAliases: string[]): boolean {
-                return groupAliases.some(alias => this.isInGroup(alias));
+                return groupAliases.some(alias => userGroups.some(group => group.alias === alias));
             },
 
             hasGroupPermission(permission: string): boolean {
@@ -117,20 +117,20 @@ export class UmbracoUserService {
             },
 
             requireSection(section: string): void {
-                if (!this.hasAccessToSection(section) && !this.hasGroupSectionAccess(section)) {
+                if (!user.allowedSections.includes(section) && !userGroups.some(group => group.sections.includes(section))) {
                     throw new Error(`User does not have access to section: ${section}`);
                 }
             },
 
             requirePermission(permission: string): void {
-                if (!this.hasPermission(permission) && !this.hasGroupPermission(permission)) {
+                if (!user.fallbackPermissions.includes(permission) && !userGroups.some(group => group.permissions.includes(permission))) {
                     throw new Error(`User does not have permission: ${permission}`);
                 }
             },
 
             requireAnyPermission(permissions: string[]): void {
                 const hasAny = permissions.some(permission => 
-                    this.hasPermission(permission) || this.hasGroupPermission(permission)
+                    user.fallbackPermissions.includes(permission) || userGroups.some(group => group.permissions.includes(permission))
                 );
                 
                 if (!hasAny) {
@@ -139,7 +139,7 @@ export class UmbracoUserService {
             },
 
             requireGroup(groupAlias: string): void {
-                if (!this.isInGroup(groupAlias)) {
+                if (!userGroups.some(group => group.alias === groupAlias)) {
                     throw new Error(`User is not in required group: ${groupAlias}`);
                 }
             }
