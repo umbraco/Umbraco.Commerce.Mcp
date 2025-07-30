@@ -24,6 +24,6 @@ export default defineConfig({
             name: "@hey-api/sdk",
             asClass: true,
         },
-        'zod'
+        // 'zod'
     ],
 });

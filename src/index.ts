@@ -2,6 +2,9 @@
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { client } from "./api/index.js";
 import { createUmbracoAuthPlugin } from "./plugins/umbraco-auth.plugin.js";
+import { UmbracoUserService } from "./services/umbraco-user.service.js";
+import { ToolRegistrationContext } from "./types/tool-registration-context.js";
+import { registerTools } from "./tools/tool-registrar.js";
 
 // The main execution loop
 const main = async () => {
@@ -26,8 +29,23 @@ const main = async () => {
     // Install the plugin - this sets up everything
     authPlugin.install(client);
     
+    // Create user service for authorization checks in other tools
+    const userService = new UmbracoUserService(
+        process.env.UMBRACO_BASE_URL!,
+        authPlugin.getToken
+    );
+    
+    // Fetch user session with all permissions and groups
+    const userSession = await userService.getCurrentUserSession();
+    
+    // Create the tool context to pass to tool registration functions
+    const toolContext: ToolRegistrationContext = {
+        server,
+        session: userSession,
+    };
+    
     // Register all tools and resources
-
+    registerTools(toolContext);
 
     // Start receiving messages on stdin and sending messages on stdout
     const transport = new StdioServerTransport();
