@@ -1,8 +1,12 @@
 ﻿import { defineConfig } from "@hey-api/openapi-ts";
 
+import dotenv from 'dotenv';
+
+dotenv.config();
+
 export default defineConfig({
     debug: true,
-    input: "https://localhost:44322/umbraco/swagger/commerce-management/swagger.json",
+    input: `${process.env.UMBRACO_BASE_URL}/umbraco/swagger/commerce-management/swagger.json`,
     output: {
         path: "src/api",
     },
