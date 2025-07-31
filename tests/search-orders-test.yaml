@@ -1,0 +1,7 @@
+tools:
+  expected_tool_list: ['search_orders']
+  tests:
+    - name: 'Search Orders Successfully'
+      tool: 'search_orders'
+      params: { storeIdOrAlias: 'blendid', page: 1, pageSize: 10 }
+      expect: { success: true }

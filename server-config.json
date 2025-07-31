@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "umbraco-commerce-mcp-server": {
+      "command": "node",
+      "args": ["./build/index.js"]
+    }
+  }
+}
