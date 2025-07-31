@@ -92,9 +92,10 @@ export function createUmbracoAuthPlugin(config: UmbracoAuthConfig): UmbracoAuthP
          * Installs the authentication plugin on the client instance
          */
         install: (clientInstance: any) => {
+            
             // Configure base URL
             clientInstance.setConfig({
-                baseUrl: `${config.host}/umbraco/management/api/v1`,
+                baseUrl: config.host
             });
 
             // Add request interceptor for authentication

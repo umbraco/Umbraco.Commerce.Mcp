@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { ToolDefinition } from '../../types/tool-definition.js';
-import { UserSession } from '../../types/umbraco-user.js';
+import { UserSession } from '../../types/user-session.js';
 import { createTextResult } from '../../utils/tool-result-helpers.js';
 
 const cancelOrderSchema = z.object({

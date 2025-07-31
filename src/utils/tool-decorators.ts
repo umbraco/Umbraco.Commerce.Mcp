@@ -1,5 +1,5 @@
 import { ToolDefinition } from '../types/tool-definition.js';
-import { UserSession } from '../types/umbraco-user.js';
+import { UserSession } from '../types/user-session.js';
 import { ZodRawShape } from "zod";
 import { ToolCallback } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { createErrorResult } from './tool-result-helpers.js';

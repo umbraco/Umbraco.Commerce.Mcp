@@ -1,5 +1,5 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import { UserSession } from "./umbraco-user.js";
+import { UserSession } from "./user-session.js";
 
 /**
  * Context object passed to tool registration functions

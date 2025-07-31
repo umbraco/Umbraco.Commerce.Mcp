@@ -31,12 +31,3 @@ export interface UmbracoUser
     allowedSections: string[];
     isAdmin: boolean;
 }
-
-/**
- * Represents a user session in Umbraco, providing access to user information and permissions.
- */
-export interface UserSession {
-    user: UmbracoUser;
-    hasAccessToSection(section: string): boolean;
-    requireSection(section: string): void;
-}

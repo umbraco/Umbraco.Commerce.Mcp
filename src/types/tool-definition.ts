@@ -1,6 +1,6 @@
 ﻿import { ToolCallback } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { ZodRawShape} from "zod";
-import { UserSession } from "./umbraco-user.js";
+import { UserSession } from "./user-session.js";
 
 /**
  * Represents a tool definition with its metadata and handler function.
