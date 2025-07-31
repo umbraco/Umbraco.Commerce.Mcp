@@ -5,6 +5,7 @@ import { StoreClaimsDto } from "../api/index.js";
  * Represents a session in Umbraco, providing access to user information and permissions.
  */
 export class UserSession {
+    
     public readonly user: UmbracoUser;
     public readonly stores: Array<StoreClaimsDto>;
 
@@ -41,5 +42,25 @@ export class UserSession {
      */
     hasAccessToSensitiveData(): boolean {
         return this.user.hasAccessToSensitiveData;
+    }
+
+    /**
+     * Check if user is a store manager by ID or alias
+     * @param storeIdOrAlias
+     */
+    isStoreManager(storeIdOrAlias: string): boolean {
+        return this.stores.some(store => 
+            store.id === storeIdOrAlias || store.alias === storeIdOrAlias && store.claims.includes("manager")
+        );
+    }
+    
+    /**
+     * Check if user is a store admin by ID or alias
+     * @param storeIdOrAlias
+     */
+    isStoreAdmin(storeIdOrAlias: string): boolean {
+        return this.stores.some(store => 
+            store.id === storeIdOrAlias || store.alias === storeIdOrAlias && store.claims.includes("admin")
+        );
     }
 }
