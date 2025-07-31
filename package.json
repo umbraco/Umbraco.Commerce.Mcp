@@ -9,8 +9,8 @@
   },
   "scripts": {
     "build": "tsc",
-    "inspect": "tsc && npx dotenv -e .env -- npx @modelcontextprotocol/inspector node build/index.js",
-    "generate:api": "npx dotenv -e .env -- openapi-ts --file openapi-ts.config.js"
+    "inspect": "tsc && dotenv -e .env -- mcp-inspector node build/index.js",
+    "generate:api": "dotenv -e .env -- openapi-ts --file openapi-ts.config.js"
   },
   "engines": {
     "node": ">=22.0.0"

@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import { ToolDefinition } from '../../types/tool-definition.js';
 import { UserSession } from '../../types/umbraco-user.js';
+import { createJsonResult } from '../../utils/tool-result-helpers.js';
 
 const getOrderByIdSchema = z.object({
     orderId: z.string().uuid('Invalid order ID format')
@@ -9,7 +10,7 @@ const getOrderByIdSchema = z.object({
 const getOrderByIdTool = {
     name: 'get_order_by_id',
     description: 'Retrieve an order by its unique identifier',
-    schema: getOrderByIdSchema.shape,
+    inputSchema: getOrderByIdSchema.shape,
     
     isAllowed: (session: UserSession) => session.hasAccessToSection('commerce'),
     
@@ -27,12 +28,7 @@ const getOrderByIdTool = {
             createdDate: new Date().toISOString()
         };
         
-        return {
-            content: [{
-                type: "text",
-                text: JSON.stringify(mockOrder, null, 2)
-            }]
-        };
+        return createJsonResult(mockOrder);
     }
     
 } satisfies ToolDefinition<typeof getOrderByIdSchema.shape>;

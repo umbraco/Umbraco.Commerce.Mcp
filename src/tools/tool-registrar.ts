@@ -6,6 +6,7 @@ import path from 'path';
 import { fileURLToPath, pathToFileURL } from 'url';
 import { z } from 'zod';
 import { ToolCallback } from "@modelcontextprotocol/sdk/server/mcp.js";
+import {createJsonResult} from "../utils/tool-result-helpers.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -16,7 +17,8 @@ const ToolModuleSchema = z.object({
             .min(1, 'Tool name is required'),
         description: z.string()
             .min(1, 'Tool description is required'),
-        schema: z.any().optional(), // Schema can be any Zod shape
+        inputSchema: z.any().optional(), // Schema can be any Zod shape
+        outputSchema: z.any().optional(), // Schema can be any Zod shape
         handler: z.function()
             .args(z.any(), z.any())
             .returns(z.any()),
@@ -49,7 +51,9 @@ export async function discoverTools(): Promise<ToolDefinition<any>[]> {
         const module = await import(fileUrl);
         const validationResult = ToolModuleSchema.safeParse(module);
         if (validationResult.success) {
-            tools.push(withErrorHandling(validationResult.data.default));
+            tools.push(validationResult.data.default);
+        } else {
+            console.error(`Tool module at ${file} failed validation:`, validationResult.error);
         }
     }
     
@@ -59,11 +63,12 @@ export async function discoverTools(): Promise<ToolDefinition<any>[]> {
 const registerAllowedTools = (context: ToolRegistrationContext, tools: ToolDefinition<any>[]) => 
 {
     tools.filter(tool => tool.isAllowed === undefined || tool.isAllowed(context.session))
+        .map(withErrorHandling)
         .forEach(tool => {
-            if (tool.schema) {
-                context.server.tool(tool.name, tool.description, tool.schema, tool.handler);
-            } else {
-                context.server.tool(tool.name, tool.description, tool.handler as ToolCallback<undefined>);
-            }
+            context.server.registerTool(tool.name, {
+                description: tool.description,
+                inputSchema: tool.inputSchema,
+                outputSchema: tool.outputSchema,
+            }, tool.handler);
         });
 }

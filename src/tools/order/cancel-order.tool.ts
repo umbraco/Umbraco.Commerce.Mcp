@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import { ToolDefinition } from '../../types/tool-definition.js';
 import { UserSession } from '../../types/umbraco-user.js';
+import { createTextResult } from '../../utils/tool-result-helpers.js';
 
 const cancelOrderSchema = z.object({
     orderId: z.string().uuid('Invalid order ID format'),
@@ -10,7 +11,7 @@ const cancelOrderSchema = z.object({
 export default {
     name: 'cancel_order',
     description: 'Cancel an order with a reason',
-    schema: cancelOrderSchema.shape,
+    inputSchema: cancelOrderSchema.shape,
     
     isAllowed: (session: UserSession) => session.hasAccessToSection('commerce'),
     
@@ -35,12 +36,7 @@ export default {
             cancelledBy: 'System' // Would normally use context.session.user.name but context structure varies
         };
         
-        return {
-            content: [{
-                type: "text",
-                text: `Order ${orderId} has been cancelled successfully.\n\n${JSON.stringify(cancelledOrder, null, 2)}`
-            }]
-        };
+        return createTextResult(`Order ${orderId} has been cancelled successfully.\n\n${JSON.stringify(cancelledOrder, null, 2)}`);
     }
     
 } satisfies ToolDefinition<typeof cancelOrderSchema.shape>;

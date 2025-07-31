@@ -2,6 +2,7 @@ import { ToolDefinition } from '../types/tool-definition.js';
 import { UserSession } from '../types/umbraco-user.js';
 import { ZodRawShape } from "zod";
 import { ToolCallback } from "@modelcontextprotocol/sdk/server/mcp.js";
+import { createErrorResult } from './tool-result-helpers.js';
 
 /**
  * Tool decorator that automatically adds error handling
@@ -16,29 +17,7 @@ export function withErrorHandling<Args extends ZodRawShape | undefined = undefin
             }
             catch (error)
             {
-                // Log the error
-                console.error(`Error in tool ${toolDef.name}:`, error);
-
-                const errorDetails = error instanceof Error
-                    ? {
-                        message: error.message,
-                        cause: error.cause,
-                        response: (error as any).response?.data,
-                    }
-                    : error;
-
-                return {
-                    content: [
-                        {
-                            type: "text" as const,
-                            text: `Error using ${toolDef.name}:\n${JSON.stringify(
-                                errorDetails,
-                                null,
-                                2
-                            )}`,
-                        },
-                    ],
-                };
+                return createErrorResult(`Error using ${toolDef.name}`, error instanceof Error ? error : new Error(String(error)));
             }
         }) as ToolCallback<Args>
     };

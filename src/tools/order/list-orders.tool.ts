@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import { ToolDefinition } from '../../types/tool-definition.js';
 import { UserSession } from '../../types/umbraco-user.js';
+import { createJsonResult } from '../../utils/tool-result-helpers.js';
 
 const listOrdersSchema = z.object({
     page: z.number().min(1).default(1),
@@ -11,7 +12,7 @@ const listOrdersSchema = z.object({
 export default {
     name: 'list_orders',
     description: 'List orders with optional filtering and pagination',
-    schema: listOrdersSchema.shape,
+    inputSchema: listOrdersSchema.shape,
     
     isAllowed: (session: UserSession) => session.hasAccessToSection('commerce'),
     
@@ -39,11 +40,6 @@ export default {
             filters: status ? { status } : {}
         };
         
-        return {
-            content: [{
-                type: "text",
-                text: JSON.stringify(response, null, 2)
-            }]
-        };
+        return createJsonResult(response);
     }
 } satisfies ToolDefinition<typeof listOrdersSchema.shape>;
