@@ -5,9 +5,13 @@ import { createUmbracoAuthPlugin } from "./plugins/umbraco-auth.plugin.js";
 import { UmbracoUserService } from "./services/umbraco-user.service.js";
 import { ToolRegistrationContext } from "./types/tool-registration-context.js";
 import { registerTools } from "./tools/tool-registrar.js";
+import { envSchema } from "./types/schemas.js";
 
 // The main execution loop
 const main = async () => {
+    
+    // Validate environment variables
+    const env = envSchema.parse(process.env)
     
     // Create the MCP server
     const server = new McpServer({
@@ -21,9 +25,9 @@ const main = async () => {
     
     // Create an umbraco auth client plugin
     const authPlugin  = createUmbracoAuthPlugin({
-        host: process.env.UMBRACO_BASE_URL!,
-        clientId: process.env.UMBRACO_CLIENT_ID!,
-        clientSecret: process.env.UMBRACO_CLIENT_SECRET!
+        host: env.UMBRACO_BASE_URL!,
+        clientId: env.UMBRACO_CLIENT_ID!,
+        clientSecret: env.UMBRACO_CLIENT_SECRET!
     });
 
     // Install the plugin - this sets up everything
@@ -31,7 +35,7 @@ const main = async () => {
     
     // Create user service for authorization checks in other tools
     const userService = new UmbracoUserService(
-        process.env.UMBRACO_BASE_URL!,
+        env.UMBRACO_BASE_URL!,
         authPlugin.getToken
     );
     
