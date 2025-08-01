@@ -4,7 +4,7 @@ import { Session } from '../../../common/session/types/session.js';
 import { createJsonResult } from '../../../common/mcp/tools/tool-result-helpers.js';
 import { Order, OrderDto } from "../../../infrastructure/umbraco-commerce/index.js";
 import { storeIdOrAliasRequestSchema } from "../../../common/types/store.js";
-import { mapToOrderSummaries } from "../types/order-mappers.js";
+import { mapToOrderSummary } from "../types/order-mappers.js";
 import { paginationRequestSchema, paginator } from "../../../common/types/pagination.js";
 
 const searchOrdersRequestSchema = storeIdOrAliasRequestSchema
@@ -46,8 +46,6 @@ Example: ["customerFirstName:mike", "tags:dispatched", "placedAfter:2025-01-01T1
     execute: async (args, context) => {
         
         const { storeIdOrAlias, cursor, filter } = args;
-        
-        console.error(cursor)
 
         const { data, nextCursor } = await paginator.paginate<OrderDto>(async (page, pageSize) => {
             const { data } = await Order.getOrders({
@@ -66,8 +64,6 @@ Example: ["customerFirstName:mike", "tags:dispatched", "placedAfter:2025-01-01T1
             }
         }, { cursor });
         
-        console.error(`Cursor ${cursor}, Next Cursor: ${nextCursor}`);
-        
-        return createJsonResult(mapToOrderSummaries(data), nextCursor);
+        return createJsonResult(data.map(mapToOrderSummary), nextCursor);
     }
 } satisfies ToolDefinition<typeof searchOrdersRequestSchema.shape>;
