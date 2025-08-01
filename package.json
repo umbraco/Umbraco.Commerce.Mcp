@@ -9,6 +9,7 @@
   },
   "scripts": {
     "build": "tsc",
+    "start": "npm run build && dotenv -e .env -- node build/index.js",
     "inspect": "npm run build && dotenv -e .env -- mcp-inspector node build/index.js",
     "generate:api": "dotenv -e .env -- openapi-ts --file openapi-ts.config.js",
     "test:tools": "npm run build && dotenv -e .env -- mcp-server-tester tools tests/search-orders-test.yaml --server-config server-config.json",
