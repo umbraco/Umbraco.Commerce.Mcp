@@ -17,7 +17,7 @@ export function withErrorHandling<TParams extends ZodRawShape | undefined = unde
             }
             catch (error)
             {
-                return createErrorResult(`Error using ${toolDef.name}`, error instanceof Error ? error : new Error(String(error)));
+                return createErrorResult(`Error using ${toolDef.name}`, error instanceof Error ? error : new Error(JSON.stringify(error)));
             }
         }) as ToolCallback<TParams>
     };
