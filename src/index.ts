@@ -15,11 +15,7 @@ const main = async () => {
     // Create the MCP server
     const server = new McpServer({
         name: "umbraco-commerce-mcp-server",
-        version: "1.0.0",
-        capabilities: {
-            resources: {},
-            tools: {},
-        },
+        version: "1.0.0"
     });
     
     // Create an umbraco auth client plugin
