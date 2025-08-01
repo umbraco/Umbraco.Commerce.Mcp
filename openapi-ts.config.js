@@ -4,7 +4,7 @@ export default defineConfig({
     debug: true,
     input: `${process.env.UMBRACO_BASE_URL}/umbraco/swagger/commerce-management/swagger.json`,
     output: {
-        path: "src/api",
+        path: "src/infrastructure/umbraco-commerce",
     },
     plugins: [
         {

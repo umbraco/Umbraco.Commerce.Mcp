@@ -1,5 +1,5 @@
 import { Price, priceSchema } from './price.js';
-import { PriceDto } from "../api/index.js";
+import { PriceDto } from "../../infrastructure/umbraco-commerce/index.js";
 
 /**
  * Maps a PriceDto from the API to a Price for tool responses

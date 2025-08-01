@@ -1,16 +1,17 @@
-﻿import { UserSession } from "../types/user-session.js";
-import { umbracoUserService } from "./umbraco-user.service.js";
-import { Session as SessionClient } from '../api/index.js'
+﻿
+import { Session } from "../types/session.js";
+import { Session as SessionClient } from "../../../infrastructure/umbraco-commerce/index.js";
+import { umbracoUserService } from "../../../domains/umbraco/users/services/umbraco-user-service.js";
 
 /**
  * Service for managing user sessions in the Umbraco Commerce context.
  * Provides methods to retrieve the current user session, including user details and store information.
  */
 class SessionService {
-    async getUserSession(): Promise<UserSession> {
+    async getSession(): Promise<Session> {
         const user = await umbracoUserService.getCurrentUser();
         const ucSession = await SessionClient.getSession()
-        return new UserSession(user, ucSession.data.stores);
+        return new Session(user, ucSession.data.stores);
     }
 }
 

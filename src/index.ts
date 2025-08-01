@@ -1,11 +1,10 @@
 ﻿import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
-import { client } from "./api/index.js";
-import { createUmbracoAuthPlugin } from "./plugins/umbraco-auth.plugin.js";
-import { ToolRegistrationContext } from "./types/tool-registration-context.js";
-import { registerTools } from "./tools/tool-registrar.js";
-import { envSchema } from "./types/schemas.js";
-import {sessionService} from "./services/session-service.js";
+import { client } from "./infrastructure/umbraco-commerce/index.js";
+import { createUmbracoAuthClientPlugin } from "./infrastructure/plugins/umbraco-auth-client-plugin.js";
+import { envSchema } from "./common/types/env.js";
+import { sessionService } from "./common/session/services/session-service.js";
+import { registerTools } from "./common/mcp/tools/tool-registrar.js";
 
 // The main execution loop
 const main = async () => {
@@ -24,7 +23,7 @@ const main = async () => {
     });
     
     // Create an umbraco auth client plugin
-    const authPlugin  = createUmbracoAuthPlugin({
+    const authPlugin  = createUmbracoAuthClientPlugin({
         host: env.UMBRACO_BASE_URL!,
         clientId: env.UMBRACO_CLIENT_ID!,
         clientSecret: env.UMBRACO_CLIENT_SECRET!
@@ -34,20 +33,13 @@ const main = async () => {
     authPlugin.install(client);
     
     // Fetch user session
-    const userSession = await sessionService.getUserSession();
-    
-    // Create the tool context to pass to tool registration functions
-    const toolContext: ToolRegistrationContext = {
-        server,
-        session: userSession,
-    };
+    const session = await sessionService.getSession();
     
     // Register all tools and resources
-    await registerTools(toolContext);
+    await registerTools({ server, session });
 
     // Start receiving messages on stdin and sending messages on stdout
-    const transport = new StdioServerTransport();
-    await server.connect(transport);
+    await server.connect(new StdioServerTransport());
 };
 
 // Global error handling

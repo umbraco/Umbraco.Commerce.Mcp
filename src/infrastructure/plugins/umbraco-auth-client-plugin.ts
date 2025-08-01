@@ -82,7 +82,7 @@ class TokenManager {
 /**
  * Creates an Umbraco authentication plugin for the Hey API client
  */
-export function createUmbracoAuthPlugin(config: UmbracoAuthConfig): UmbracoAuthPlugin {
+export function createUmbracoAuthClientPlugin(config: UmbracoAuthConfig): UmbracoAuthPlugin {
     const tokenManager = new TokenManager(config);
 
     return {
@@ -92,7 +92,7 @@ export function createUmbracoAuthPlugin(config: UmbracoAuthConfig): UmbracoAuthP
          * Installs the authentication plugin on the client instance
          */
         install: (clientInstance: any) => {
-            
+
             // Configure base URL
             clientInstance.setConfig({
                 baseUrl: config.host

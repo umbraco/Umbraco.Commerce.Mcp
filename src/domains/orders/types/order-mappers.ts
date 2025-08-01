@@ -1,6 +1,6 @@
 import { OrderSummary, orderSummarySchema } from './order.js';
-import { mapToPrice } from './price-mappers.js';
-import type { OrderDto } from '../api/index.js';
+import { mapToPrice } from '../../../common/types/price-mappers.js';
+import type { OrderDto } from '../../../infrastructure/umbraco-commerce/index.js';
 
 /**
  * Maps multiple orders efficiently

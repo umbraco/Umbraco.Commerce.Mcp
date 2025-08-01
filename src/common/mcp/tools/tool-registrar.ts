@@ -1,13 +1,17 @@
-﻿import { ToolRegistrationContext } from "../types/tool-registration-context.js";
-import { ToolDefinition } from "../types/tool-definition.js";
-import { withErrorHandling } from "../utils/tool-decorators.js";
+﻿import { ToolRegistrationContext } from "./tool-registration-context.js";
+import { ToolDefinition, toolDefinitionSchema } from "./tool-definition.js";
 import { glob } from 'glob';
 import path from 'path';
 import { fileURLToPath, pathToFileURL } from 'url';
-import { toolModuleSchema} from "../types/schemas.js";
+import { z } from "zod";
+import { withErrorHandling } from "./tool-decorators.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
+export const toolModuleSchema = z.object({
+    default: toolDefinitionSchema
+}).passthrough(); // allow additional exports from the module
 
 export async function registerTools(context: ToolRegistrationContext): Promise<void> {
     const discoveredTools = await discoverTools();
@@ -15,12 +19,12 @@ export async function registerTools(context: ToolRegistrationContext): Promise<v
 }
 
 export async function discoverTools(): Promise<ToolDefinition<any>[]> {
-    const toolsDir = __dirname;
-    const pattern = '**/*.tool.{js,ts}';
+    const toolsDir = path.resolve(__dirname, '../../../domains');
+    const pattern = '**/*{.,-}tool.{js,ts}';
     
     const toolFiles = await glob(pattern, { 
         cwd: toolsDir,
-        ignore: ['**/*.test.*', '**/*.spec.*', '**/node_modules/**']
+        ignore: ['**/*{.,-}test.*', '**/*{.,-}spec.*', '**/node_modules/**']
     });
     
     const tools: ToolDefinition<any>[] = [];
@@ -42,13 +46,13 @@ export async function discoverTools(): Promise<ToolDefinition<any>[]> {
 
 const registerAllowedTools = (context: ToolRegistrationContext, tools: ToolDefinition<any>[]) => 
 {
-    tools.filter(tool => tool.isAllowed === undefined || tool.isAllowed(context.session))
+    tools.filter(tool => tool.canAccess === undefined || tool.canAccess(context.session))
         .map(withErrorHandling)
         .forEach(tool => {
             context.server.registerTool(tool.name, {
                 description: tool.description,
-                inputSchema: tool.inputSchema,
-                outputSchema: tool.outputSchema,
-            }, tool.handler);
+                inputSchema: tool.paramsSchema,
+                outputSchema: tool.resultSchema,
+            }, tool.execute);
         });
 }

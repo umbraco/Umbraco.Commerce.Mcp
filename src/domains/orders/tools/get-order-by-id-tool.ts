@@ -1,7 +1,7 @@
 import { z } from 'zod';
-import { ToolDefinition } from '../../types/tool-definition.js';
-import { UserSession } from '../../types/user-session.js';
-import { createJsonResult } from '../../utils/tool-result-helpers.js';
+import { ToolDefinition } from '../../../common/mcp/tools/tool-definition.js';
+import { Session } from '../../../common/session/types/session.js';
+import { createJsonResult } from '../../../common/mcp/tools/tool-result-helpers.js';
 
 const getOrderByIdSchema = z.object({
     orderId: z.string().uuid('Invalid order ID format')
@@ -10,11 +10,11 @@ const getOrderByIdSchema = z.object({
 const getOrderByIdTool = {
     name: 'get_order_by_id',
     description: 'Retrieve an order by its unique identifier',
-    inputSchema: getOrderByIdSchema.shape,
+    paramsSchema: getOrderByIdSchema.shape,
     
-    isAllowed: (session: UserSession) => session.hasAccessToSection('commerce'),
+    canAccess: (session: Session) => session.hasAccessToSection('commerce'),
     
-    handler: async (args, context) => {
+    execute: async (args, context) => {
         const { orderId } = args;
         
         // This would normally use your commerce API client

@@ -1,5 +1,6 @@
-import { UmbracoUser } from '../types/umbraco-user.js';
-import { client } from '../api/index.js';
+import { UmbracoUser } from "../types/umbraco-user.js";
+import { client } from "../../../../infrastructure/umbraco-commerce/index.js";
+
 
 /**
  * Lightweight service for accessing Umbraco user information

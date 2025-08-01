@@ -1,7 +1,7 @@
 import { z } from 'zod';
-import { ToolDefinition } from '../../types/tool-definition.js';
-import { UserSession } from '../../types/user-session.js';
-import { createTextResult } from '../../utils/tool-result-helpers.js';
+import { ToolDefinition } from '../../../common/mcp/tools/tool-definition.js';
+import { Session } from '../../../common/session/types/session.js';
+import { createTextResult } from '../../../common/mcp/tools/tool-result-helpers.js';
 
 const cancelOrderSchema = z.object({
     orderId: z.string().uuid('Invalid order ID format'),
@@ -11,11 +11,11 @@ const cancelOrderSchema = z.object({
 export default {
     name: 'cancel_order',
     description: 'Cancel an order with a reason',
-    inputSchema: cancelOrderSchema.shape,
+    paramsSchema: cancelOrderSchema.shape,
     
-    isAllowed: (session: UserSession) => session.hasAccessToSection('commerce'),
+    canAccess: (session: Session) => session.hasAccessToSection('commerce'),
     
-    handler: async (args, context) => {
+    execute: async (args, context) => {
         const { orderId, reason } = args;
         
         // Business logic validation - these are expected errors that should be handled gracefully

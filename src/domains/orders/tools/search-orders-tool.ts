@@ -1,12 +1,12 @@
 import { z } from 'zod';
-import { ToolDefinition } from '../../types/tool-definition.js';
-import { UserSession } from '../../types/user-session.js';
-import { createJsonResult } from '../../utils/tool-result-helpers.js';
-import { createPaginatedSchema, paginationRequestSchema } from "../../types/pagination.js";
-import { orderSummarySchema } from "../../types/order.js";
-import { Order } from "../../api/index.js";
-import { storeIdOrAliasRequestSchema } from "../../types/store.js";
-import { mapToOrderSummaries } from "../../types/order-mappers.js";
+import { ToolDefinition } from '../../../common/mcp/tools/tool-definition.js';
+import { Session } from '../../../common/session/types/session.js';
+import { createJsonResult } from '../../../common/mcp/tools/tool-result-helpers.js';
+import { createPaginatedSchema, paginationRequestSchema } from "../../../common/types/pagination.js";
+import { orderSummarySchema } from "../types/order.js";
+import { Order } from "../../../infrastructure/umbraco-commerce/index.js";
+import { storeIdOrAliasRequestSchema } from "../../../common/types/store.js";
+import { mapToOrderSummaries } from "../types/order-mappers.js";
 
 const searchOrdersRequestSchema = storeIdOrAliasRequestSchema
     .merge(paginationRequestSchema)
@@ -19,12 +19,12 @@ const searchOrdersResponseSchema = createPaginatedSchema(orderSummarySchema)
 export default {
     name: 'search_orders',
     description: 'Search orders with optional filtering and pagination',
-    inputSchema: searchOrdersRequestSchema.shape,
-    outputSchema: searchOrdersResponseSchema.shape,
+    paramsSchema: searchOrdersRequestSchema.shape,
+    resultSchema: searchOrdersResponseSchema.shape,
     
-    isAllowed: (session: UserSession) => session.hasAccessToSection('commerce'),
+    canAccess: (session: Session) => session.hasAccessToSection('commerce'),
     
-    handler: async (args, context) => {
+    execute: async (args, context) => {
         
         const { page, pageSize } = args;
         
