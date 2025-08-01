@@ -2,33 +2,41 @@ import { z } from 'zod';
 import { ToolDefinition } from '../../../common/mcp/tools/tool-definition.js';
 import { Session } from '../../../common/session/types/session.js';
 import { createJsonResult } from '../../../common/mcp/tools/tool-result-helpers.js';
+import { Order } from "../../../infrastructure/umbraco-commerce/index.js";
+import { storeIdOrAliasRequestSchema } from "../../../common/types/store.js";
+import { mapToOrder } from "../types/order-mappers.js";
 
-const getOrderByIdSchema = z.object({
-    orderId: z.string().uuid('Invalid order ID format')
+const getOrderByIdSchema = storeIdOrAliasRequestSchema.extend({
+    orderId: z.string().uuid().describe('The unique identifier of the order to retrieve')
 });
 
 const getOrderByIdTool = {
     name: 'get_order_by_id',
-    description: 'Retrieve an order by its unique identifier',
+    description: 'Retrieve an order by its unique identifier. The order ID must be a valid UUID. This tool allows you to fetch detailed information about a specific order in the store.',
     paramsSchema: getOrderByIdSchema.shape,
     
     canAccess: (session: Session) => session.hasAccessToSection('commerce'),
     
     execute: async (args, context) => {
-        const { orderId } = args;
         
-        // This would normally use your commerce API client
-        // For now, return a mock response
-        const mockOrder = {
-            id: orderId,
-            orderNumber: `ORD-${Date.now()}`,
-            customerName: 'John Doe',
-            total: 99.99,
-            status: 'Completed',
-            createdDate: new Date().toISOString()
-        };
+        const { storeIdOrAlias, orderId } = args;
+
+        const { data } = await Order.getOrderById({
+            headers: {
+                store: storeIdOrAlias
+            },
+            path: {
+                orderId
+            }
+        });
         
-        return createJsonResult(mockOrder);
+        if (!data) {
+            throw new Error(`Order with ID ${orderId} not found in store ${storeIdOrAlias}`);
+        }
+        
+        const mapped = mapToOrder(data);
+        
+        return createJsonResult(mapped);
     }
     
 } satisfies ToolDefinition<typeof getOrderByIdSchema.shape>;
