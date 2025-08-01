@@ -3,25 +3,27 @@ import { CallToolResult } from "@modelcontextprotocol/sdk/types.js";
 /**
  * Creates a successful CallToolResult with JSON content
  */
-export function createJsonResult(data: any): CallToolResult {
+export function createJsonResult(data: any, nextCursor?: string): CallToolResult {
     return {
         content: [{
             type: "text",
             text: JSON.stringify(data, null, 2)
         }],
-        structuredContent: data
+        // structuredContent: data
+        nextCursor
     };
 }
 
 /**
  * Creates a successful CallToolResult with plain text content
  */
-export function createTextResult(text: string): CallToolResult {
+export function createTextResult(text: string, nextCursor?: string): CallToolResult {
     return {
         content: [{
             type: "text",
             text
-        }]
+        }],
+        nextCursor
     };
 }
 
