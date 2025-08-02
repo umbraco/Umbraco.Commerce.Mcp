@@ -136,3 +136,13 @@ From a store owner perspective, here are the essential MCP endpoints you'd need 
 - "What operational improvements would have the biggest impact?"
 
 The key is providing endpoints that give store owners actionable insights they can act on immediately, rather than just raw data dumps.
+
+===
+
+https://mindarc.com/blogs/news/shopify-ai-sidekick-vs-mcp-integration-comparison
+
+- Show me which products are selling well on Shopify but are understocked according to our inventory management system
+- Identify customers who abandoned their cart yesterday and show me their previous purchase history and support ticket status.
+- Create me a customer called Matthew Craig his address is 4 Australia Street, Camperdown, NSW, 2050, Australia, also created me three draft orders for him for 10, 20. and 30 orders of Vegemite
+- Compare our Shopify payout reports with our accounting system and identify any discrepancies in the last 30 days
+- Show me our top 5 best-selling products from last month and their current inventory levels, then recommend which ones need restocking.

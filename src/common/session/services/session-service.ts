@@ -1,7 +1,7 @@
 ﻿
 import { Session } from "../types/session.js";
 import { Session as SessionClient } from "../../../infrastructure/umbraco-commerce/index.js";
-import { umbracoUserService } from "../../../domains/umbraco/users/services/umbraco-user-service.js";
+import { umbracoUserService } from "../../../features/umbraco/users/services/umbraco-user-service.js";
 
 /**
  * Service for managing user sessions in the Umbraco Commerce context.

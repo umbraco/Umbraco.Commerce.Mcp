@@ -1,4 +1,4 @@
-﻿import { UmbracoUser } from "../../../domains/umbraco/users/types/umbraco-user.js";
+﻿import { UmbracoUser } from "../../../features/umbraco/users/types/umbraco-user.js";
 import { StoreClaimsDto } from "../../../infrastructure/umbraco-commerce/index.js";
 
 /**

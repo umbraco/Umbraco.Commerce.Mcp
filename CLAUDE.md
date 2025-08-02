@@ -44,7 +44,7 @@ Create `.env` file with required variables (see `.env.example`):
 ## Tool Development
 
 ### Tool Discovery
-Tools are auto-discovered from `src/domains/*/tools/*{.,-}tool.{js,ts}` files. Each tool must export a default `ToolDefinition` object.
+Tools are auto-discovered from `src/features/*/tools/*{.,-}tool.{js,ts}` files. Each tool must export a default `ToolDefinition` object.
 
 ### Tool Structure
 ```typescript
@@ -96,12 +96,12 @@ const response = await Order.getOrders({
 
 ## Domain Structure
 
-### Orders Domain (`src/domains/orders/`)
+### Orders Domain (`src/features/orders/`)
 - **Tools**: `search-orders-tool.ts`, `get-order-by-id-tool.ts`
 - **Types**: Order mapping and transformation utilities
 - **Features**: Advanced filtering, pagination, customer/product searches
 
-### Umbraco Users Domain (`src/domains/umbraco/users/`)
+### Umbraco Users Domain (`src/features/umbraco/users/`)
 - **Services**: Current user retrieval and session management
 - **Types**: User permission and access control models
 

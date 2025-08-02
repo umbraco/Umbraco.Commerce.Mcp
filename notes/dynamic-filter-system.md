@@ -5,7 +5,7 @@ This document outlines how to implement a discoverable, extensible filter system
 ## 1. Filter Registry System
 
 ```typescript
-// src/domains/orders/filters/filter-registry.ts
+// src/features/orders/filters/filter-registry.ts
 export interface FilterDefinition {
     key: string;
     name: string;
@@ -38,7 +38,7 @@ export const orderFilterRegistry = new FilterRegistry();
 ## 2. New MCP Tool: `get_order_search_filters`
 
 ```typescript
-// src/domains/orders/tools/get-order-search-filters-tool.ts
+// src/features/orders/tools/get-order-search-filters-tool.ts
 export default {
     name: 'get_order_search_filters',
     description: 'Get available filters for order search operations',
@@ -79,7 +79,7 @@ For the most up-to-date filter documentation, call: get_order_search_filters`
 ## 4. Plugin System for Custom Filters
 
 ```typescript
-// src/domains/orders/filters/filter-plugins.ts
+// src/features/orders/filters/filter-plugins.ts
 export interface FilterPlugin {
     name: string;
     filters: FilterDefinition[];
@@ -123,7 +123,7 @@ export const customEcommerceFilters: FilterPlugin = {
 
 ```typescript
 // src/index.ts - add after auth setup
-import { FilterPluginManager, customEcommerceFilters } from './domains/orders/filters/filter-plugins.js';
+import { FilterPluginManager, customEcommerceFilters } from './features/orders/filters/filter-plugins.js';
 
 const filterManager = new FilterPluginManager();
 filterManager.register(customEcommerceFilters);
