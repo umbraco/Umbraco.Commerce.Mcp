@@ -4,6 +4,7 @@ import { createJsonResult } from "../../../common/mcp/tools/tool-result-helpers.
 import { ToolDefinition } from "../../../common/mcp/tools/tool-definition.js";
 import { storeIdOrAliasRequestSchema } from "../../../common/types/store.js";
 import { z } from "zod";
+import { mapToStoreStats } from "../types/store-stats-mappers.js";
 
 const getStoreDashboardRequestSchema = storeIdOrAliasRequestSchema
     .extend({
@@ -40,17 +41,7 @@ const getStoreDashboardTool = {
             throw new Error(`Store with ID or alias "${storeIdOrAlias}" not found.`);
         }
 
-        return createJsonResult({
-            ...data,
-            allTimeTotalRevenue: {
-                value: data.allTimeTotalRevenue.value,
-                currency: data.allTimeTotalRevenue.currency!.code
-            },
-            totalRevenue: {
-                value: data.totalRevenue.value,
-                currency: data.totalRevenue.currency!.code
-            }
-        });
+        return createJsonResult(mapToStoreStats(data));
     }
 
 } satisfies ToolDefinition<typeof getStoreDashboardRequestSchema.shape>;
