@@ -6,20 +6,20 @@ import { storeIdOrAliasRequestSchema } from "../../../common/types/store.js";
 import { z } from "zod";
 import { mapToStoreStats } from "../types/store-stats-mappers.js";
 
-const getStoreDashboardRequestSchema = storeIdOrAliasRequestSchema
+const getStoreStatsRequestSchema = storeIdOrAliasRequestSchema
     .extend({
-        date: z.string().describe('Date for which to retrieve the dashboard data. Format: yyyy-MM-dd.'),
+        date: z.string().describe('Date for which to retrieve the stats data. Format: yyyy-MM-dd.'),
         localTimezoneOffset: z.number().describe('Timezone offset in minutes for the local timezone. Used to adjust date calculations.'),
     });
 
-const getStoreDashboardTool = {
-    name: 'get_store_dashboard',
-    description: `Retrieve the dashboard information for a specific store. This tool provides an overview of the store\'s performance, including total sales, number of orders, and customer statistics. The store is identified by its unique ID or alias.
+const getStoreStatsTool = {
+    name: 'get_store_stats',
+    description: `Retrieve the stats information for a specific store. This tool provides an overview of the store\'s performance, including total sales, number of orders, and customer statistics. The store is identified by its unique ID or alias.
     
     - Authorized orders require payment capturing.
     - Captured orders have payment completed and are ready for fulfillment.
     - Errored orders indicate issues with payment processing.`,
-    paramsSchema: getStoreDashboardRequestSchema.shape,
+    paramsSchema: getStoreStatsRequestSchema.shape,
 
     canAccess: (session: Session) => session.hasAccessToSection('commerce'),
 
@@ -44,6 +44,6 @@ const getStoreDashboardTool = {
         return createJsonResult(mapToStoreStats(data));
     }
 
-} satisfies ToolDefinition<typeof getStoreDashboardRequestSchema.shape>;
+} satisfies ToolDefinition<typeof getStoreStatsRequestSchema.shape>;
 
-export default getStoreDashboardTool;
+export default getStoreStatsTool;

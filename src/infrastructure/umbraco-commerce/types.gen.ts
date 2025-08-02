@@ -871,7 +871,7 @@ export type OrderReferenceDto = {
 
 export type OrderRefundRequest = {
     refundAmount: number;
-    orderlines?: Array<OrderlineRefundRequest> | null;
+    orderLines?: Array<OrderLineRefundRequest> | null;
     restockProducts: boolean;
 };
 
@@ -929,7 +929,7 @@ export type OrderTransactionInfoDto = {
     transactionActivities: Array<TransactionActivityDto>;
 };
 
-export type OrderlineRefundRequest = {
+export type OrderLineRefundRequest = {
     orderLineId: string;
     quantity: number;
 };
