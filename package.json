@@ -8,7 +8,7 @@
     "peloton": "./build/index.js"
   },
   "scripts": {
-    "build": "tsc",
+    "build": "rimraf build && tsc",
     "start": "npm run build && dotenv -e .env -- node build/index.js",
     "inspect": "npm run build && dotenv -e .env -- mcp-inspector node build/index.js",
     "generate:api": "dotenv -e .env -- openapi-ts --file openapi-ts.config.js",
@@ -36,6 +36,7 @@
     "dotenv-cli": "^10.0.0",
     "glob": "^11.0.3",
     "mcp-server-tester": "^1.4.0",
+    "rimraf": "^6.0.1",
     "typescript": "^5.8.3",
     "zod": "^3.25.76"
   }

@@ -13,12 +13,17 @@ const searchOrdersRequestSchema = storeIdOrAliasRequestSchema
         filter: z.array(z.string()).optional().describe('Array of filter strings in format "key:value". See tool description for supported filters.')
     });
 
-export default {
+const searchOrdersTool = {
     name: 'search_orders',
     description: `Search orders with optional filtering and pagination.
 
 SUPPORTED FILTERS:
 Use the 'filters' parameter with an array of strings in "key:value" format:
+
+System Filters:
+- term:searchTerm - Search for orders containing the term in any searchable field (e.g., customer name, order number).
+- orderStatus:fd0c6eec-ba3f-41c2-87c4-4bd2201e9921 - Filter by order status ID (exact match). You can apply multiple filters to match items with any of the selected statuses (OR logic). Use the get_order_statuses tool to retrieve available statuses.
+- paymentStatus:Initialized - Filter by payment status (One of Initialized, Authorized, Captured, Cancelled, Refunded, PartiallyRefunded, PendingExternalSystem or Error). You can apply multiple filters to match items with any of the selected statuses (OR logic).
 
 Customer Filters:
 - customerFirstName:john - Filter by customer first name (partial match).
@@ -67,3 +72,5 @@ Example: ["customerFirstName:mike", "tags:dispatched", "placedAfter:2025-01-01T1
         return createJsonResult(data.map(mapToOrderSummary), nextCursor);
     }
 } satisfies ToolDefinition<typeof searchOrdersRequestSchema.shape>;
+
+export default searchOrdersTool;

@@ -10,8 +10,8 @@ const getOrderByIdSchema = storeIdOrAliasRequestSchema.extend({
     orderId: z.string().uuid().describe('The unique identifier of the order to retrieve')
 });
 
-const getOrderByIdTool = {
-    name: 'get_order_by_id',
+const getOrderTool = {
+    name: 'get_order',
     description: 'Retrieve an order by its unique identifier. The order ID must be a valid UUID. This tool allows you to fetch detailed information about a specific order in the store.',
     paramsSchema: getOrderByIdSchema.shape,
     
@@ -41,4 +41,4 @@ const getOrderByIdTool = {
     
 } satisfies ToolDefinition<typeof getOrderByIdSchema.shape>;
 
-export default getOrderByIdTool;
+export default getOrderTool;
