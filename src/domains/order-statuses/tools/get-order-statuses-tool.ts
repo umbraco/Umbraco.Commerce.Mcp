@@ -3,6 +3,7 @@ import { OrderStatus } from "../../../infrastructure/umbraco-commerce/index.js";
 import { createJsonResult } from "../../../common/mcp/tools/tool-result-helpers.js";
 import { ToolDefinition } from "../../../common/mcp/tools/tool-definition.js";
 import { storeIdOrAliasRequestSchema } from "../../../common/types/store.js";
+import { mapToOrderStatus } from "../types/order-status-mappers.js";
 
 const getOrderStatusesTool = {
     name: 'get_order_statuses',
@@ -25,12 +26,7 @@ const getOrderStatusesTool = {
             throw new Error(`No order statuses found for store with ID or alias "${storeIdOrAlias}".`);
         }
 
-        return createJsonResult(data.map(status => ({
-            id: status.id,
-            alias: status.alias,
-            name: status.name,
-            color: status.color
-        })));
+        return createJsonResult(data.map(mapToOrderStatus));
     }
 
 } satisfies ToolDefinition<typeof storeIdOrAliasRequestSchema.shape>;

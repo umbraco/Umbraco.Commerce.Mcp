@@ -1,13 +1,6 @@
 // External dependencies
 import { z } from 'zod';
 import { priceSchema } from "../../../common/types/price.js";
-import {
-    AdjustedPriceDto, AdjustedPriceWithPreviousAdjustmentsDto,
-    AttributeCombinationDto,
-    TaxClassDto,
-    TaxClassNamedReferenceDto,
-    TaxClassReferenceDto
-} from "../../../infrastructure/umbraco-commerce/index.js";
 
 // =============================================================================
 // FOUNDATION SCHEMAS (No Dependencies)
@@ -53,12 +46,12 @@ export const orderShippingInfoSchema = orderCompanyAddressSchema.extend({
     contact: orderContactSchema.optional().nullable(),
     shippingMethod: z.string().optional().nullable(),
     shippingOption: z.string().optional().nullable(),
-    totalPrice: priceSchema.optional().nullable(),
+    totalPrice: priceSchema.optional().nullable().describe('Total fee for shipping, including any adjustments or taxes.'),
 });
 
 export const orderPaymentInfoSchema = z.object({
     paymentMethod: z.string().optional().nullable(),
-    totalPrice: priceSchema.optional().nullable(),
+    totalPrice: priceSchema.optional().nullable().describe('Total fee for payment processing, including any adjustments or taxes.'),
 });
 
 export const orderLineSchema = z.object({
