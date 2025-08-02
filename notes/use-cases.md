@@ -46,8 +46,8 @@ From a store owner perspective, here are the essential MCP endpoints you'd need 
 **Core Endpoints:**
 - `GET /mcp/orders/problematic` - Orders with issues (disputes, delays)
 - `GET /mcp/customers/segments` - Customer groups (VIP, new, at-risk)
-- `PUT /mcp/orders/{id}/notes` - Add internal notes to orders
-- `GET /mcp/refunds/pending` - Refund requests to process
+- ✅ `PUT /mcp/orders/{id}/notes` - Add internal notes to orders
+- ✅ `GET /mcp/refunds/pending` - Refund requests to process
 
 **Use Cases:**
 - Customer service: "Which customers need my personal attention?"
