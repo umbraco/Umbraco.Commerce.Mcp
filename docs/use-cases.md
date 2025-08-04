@@ -4,226 +4,89 @@ From a store owner perspective, here are the essential capabilities needed for d
 
 ## Daily Operations Dashboard
 
-### Today's Key Metrics
-- **Use Case**: Morning routine check - "What happened overnight? Any urgent issues?"
-- **Implementation**: ✅ **IMPLEMENTED** - `get_store_stats` tool
-- **Details**: Provides today's sales, orders, revenue, and key performance indicators
-
-### Orders Needing Attention  
-- **Use Case**: Priority management - "What orders need my immediate attention?"
-- **Implementation**: ✅ **IMPLEMENTED** - `search_orders` tool with order status filtering
-- **Details**: Filter by specific order statuses to find problematic orders, use `get_order_statuses` to see available statuses
-
-### Low Stock Alerts
-- **Use Case**: Inventory monitoring - "What products are running low and need restocking?"
-- **Implementation**: 📋 **PLANNED** - Proposed `get_low_stock_products_analytics` tool
-- **Details**: See [Low Stock Product Analytics specification](technical-specs/low-stock-product-analytics.md)
-
-### Failed Payment Follow-up
-- **Use Case**: Payment issue resolution - "What payments failed and need follow-up?"
-- **Implementation**: ✅ **IMPLEMENTED** - `search_orders` tool with payment status filtering
-- **Details**: Filter by payment statuses like "Errored" to identify payment issues
+| Use Case | Implementation | Tool/API | Details |
+|----------|----------------|----------|---------|
+| Morning routine check - "What happened overnight? Any urgent issues?" | ✅ **IMPLEMENTED** | `get_store_stats` | Provides today's sales, orders, revenue, and key performance indicators |
+| Priority management - "What orders need my immediate attention?" | ✅ **IMPLEMENTED** | `search_orders` with status filtering | Filter by specific order statuses to find problematic orders |
+| Inventory monitoring - "What products are running low and need restocking?" | 📋 **PLANNED** | `get_low_stock_products_analytics` | See [Low Stock Product Analytics](technical-specs/low-stock-product-analytics.md) |
+| Payment issue resolution - "What payments failed and need follow-up?" | ✅ **IMPLEMENTED** | `search_orders` with payment status filtering | Filter by payment statuses like "Error" to identify payment issues |
 
 ## Inventory Management
 
-### Products Below Reorder Threshold
-- **Use Case**: Restocking decisions - "What do I need to reorder this week?"
-- **Implementation**: 📋 **PLANNED** - Proposed `get_low_stock_products_analytics` tool
-- **Details**: See [Low Stock Product Analytics specification](technical-specs/low-stock-product-analytics.md)
-
-### Stock Level Updates
-- **Use Case**: Stock takes - "Update inventory counts after physical count"
-- **Implementation**: ❌ **NOT IMPLEMENTED** - Would require Commerce API stock update endpoints
-- **Details**: Current Commerce Management API is read-only for stock levels
-
-### Inventory Valuation
-- **Use Case**: Cash flow planning - "How much money is tied up in inventory?"
-- **Implementation**: ❌ **NOT IMPLEMENTED** - Would require custom analytics endpoint
-- **Details**: No current Commerce API endpoint for inventory valuation calculations
+| Use Case | Implementation | Tool/API | Details |
+|----------|----------------|----------|---------|
+| Restocking decisions - "What do I need to reorder this week?" | 📋 **PLANNED** | `get_low_stock_products_analytics` | See [Low Stock Product Analytics](technical-specs/low-stock-product-analytics.md) |
+| Stock takes - "Update inventory counts after physical count" | ❌ **NOT IMPLEMENTED** | Stock update endpoints needed | Current Commerce Management API is read-only for stock levels |
+| Cash flow planning - "How much money is tied up in inventory?" | ❌ **NOT IMPLEMENTED** | Custom analytics endpoint needed | No current Commerce API endpoint for inventory valuation |
 
 ## Sales & Revenue Analysis
 
-### Sales Performance Summary
-- **Use Case**: Business performance - "How did last month compare to the same month last year?"
-- **Implementation**: ✅ **PARTIALLY IMPLEMENTED** - Multiple analytics tools
-- **Details**: `get_total_revenue_analytics`, `get_total_orders_analytics`, `get_average_order_value_analytics` provide core metrics
-
-### Product Performance Analysis
-- **Use Case**: Product decisions - "Which products should I discontinue or promote more?"
-- **Implementation**: ✅ **IMPLEMENTED** - `get_top_selling_products_analytics` tool
-- **Details**: Identifies best-performing products by sales volume and revenue
-
-### Product Quality & Return Analysis
-- **Use Case**: Quality control - "Which products have the highest return rates and should I investigate quality issues?"
-- **Implementation**: 📋 **PLANNED** - Would require new product return analytics API
-- **Details**: Critical for identifying quality problems, supplier issues, and customer satisfaction trends (see [Product Return Rate Analytics specification](technical-specs/product-return-rate-analytics.md))
-
-### Customer Conversion Analysis
-- **Use Case**: Marketing effectiveness - "How well are we converting visitors to customers?"
-- **Implementation**: ✅ **IMPLEMENTED** - `get_cart_conversion_rates_analytics` tool
-- **Details**: Provides cart and checkout conversion metrics
-
-### Customer Retention Analysis
-- **Use Case**: Customer insights - "How many customers are returning to buy again?"
-- **Implementation**: ✅ **IMPLEMENTED** - `get_repeat_customer_rates_analytics` tool
-- **Details**: Tracks customer retention and repeat purchase behavior
-
-### Abandoned Cart Recovery
-- **Use Case**: Revenue recovery - "Who abandoned their cart and might complete their purchase?"
-- **Implementation**: ✅ **IMPLEMENTED** - `get_abandoned_cart_conversion_rates_analytics` tool
-- **Details**: Identifies abandoned cart recovery opportunities
+| Use Case | Implementation | Tool/API | Details |
+|----------|----------------|----------|---------|
+| Business performance - "How did last month compare to the same month last year?" | ✅ **PARTIALLY IMPLEMENTED** | Multiple analytics tools | `get_total_revenue_analytics`, `get_total_orders_analytics`, `get_average_order_value_analytics` |
+| Product decisions - "Which products should I discontinue or promote more?" | ✅ **IMPLEMENTED** | `get_top_selling_products_analytics` | Identifies best-performing products by sales volume and revenue |
+| Quality control - "Which products have the highest return rates?" | 📋 **PLANNED** | Product return analytics API | See [Product Return Rate Analytics](technical-specs/product-return-rate-analytics.md) |
+| Marketing effectiveness - "How well are we converting visitors to customers?" | ✅ **IMPLEMENTED** | `get_cart_conversion_rates_analytics` | Provides cart and checkout conversion metrics |
+| Customer insights - "How many customers are returning to buy again?" | ✅ **IMPLEMENTED** | `get_repeat_customer_rates_analytics` | Tracks customer retention and repeat purchase behavior |
+| Revenue recovery - "Who abandoned their cart and might complete their purchase?" | ✅ **IMPLEMENTED** | `get_abandoned_cart_conversion_rates_analytics` | Identifies abandoned cart recovery opportunities |
 
 ## Order & Customer Management
 
-### Order Issue Identification
-- **Use Case**: Customer service - "Any shipping problems or customer complaints?"
-- **Implementation**: ✅ **IMPLEMENTED** - `search_orders` tool with status filtering
-- **Details**: Filter by problematic order statuses to identify orders needing attention
-
-### Order Documentation
-- **Use Case**: Internal communication - "Add notes about this customer's special requirements"
-- **Implementation**: ✅ **IMPLEMENTED** - `add_order_note_tool`
-- **Details**: Add internal notes to orders for team communication
-
-### Order Tagging
-- **Use Case**: Order categorization - "Tag this order as 'rush delivery'"
-- **Implementation**: ✅ **IMPLEMENTED** - `add_order_tags_tool`
-- **Details**: Add tags to orders for better organization and filtering
-
-### Payment Management
-- **Use Case**: Payment processing - "Capture this authorized payment" or "Process this refund"
-- **Implementation**: ✅ **IMPLEMENTED** - Payment management tools
-- **Details**: `capture_order_payment_tool`, `cancel_order_payment_tool`, `refund_order_payment_tool`
-
-### Order Retrieval
-- **Use Case**: Order details - "Show me all details for order #12345"
-- **Implementation**: ✅ **IMPLEMENTED** - `get_order` tool
-- **Details**: Retrieve complete order information including customer, items, payments
-
-### Customer Segmentation
-- **Use Case**: Relationship building - "Who are my VIP customers?"
-- **Implementation**: ❌ **NOT IMPLEMENTED** - Would require customer analytics endpoints
-- **Details**: No current Commerce API for customer segmentation or lifetime value
+| Use Case | Implementation | Tool/API | Details |
+|----------|----------------|----------|---------|
+| Customer service - "Any shipping problems or customer complaints?" | ✅ **IMPLEMENTED** | `search_orders` with status filtering | Filter by problematic order statuses to identify orders needing attention |
+| Internal communication - "Add notes about this customer's special requirements" | ✅ **IMPLEMENTED** | `add_order_note_tool` | Add internal notes to orders for team communication |
+| Order categorization - "Tag this order as 'rush delivery'" | ✅ **IMPLEMENTED** | `add_order_tags_tool` | Add tags to orders for better organization and filtering |
+| Payment processing - "Capture this authorized payment" or "Process this refund" | ✅ **IMPLEMENTED** | Payment management tools | `capture_order_payment_tool`, `cancel_order_payment_tool`, `refund_order_payment_tool` |
+| Order details - "Show me all details for order #12345" | ✅ **IMPLEMENTED** | `get_order` | Retrieve complete order information including customer, items, payments |
+| Relationship building - "Who are my VIP customers?" | ❌ **NOT IMPLEMENTED** | Customer analytics endpoints needed | No current Commerce API for customer segmentation or lifetime value |
 
 ## Cart & Customer Service Management
 
-### Cart Creation for Customers
-- **Use Case**: Customer service - "Create a cart for this customer and send them a payment link"
-- **Implementation**: 🔧 **API AVAILABLE** - Cart creation and payment link APIs exist, MCP tools not yet implemented
-- **Details**: Useful for phone orders, custom quotes, or helping customers who have technical difficulties
-
-### Abandoned Cart Review
-- **Use Case**: Customer assistance - "A customer says they can't complete checkout - show me their cart"
-- **Implementation**: 🔧 **API AVAILABLE** - Cart retrieval and customer identification APIs exist, MCP tools not yet implemented
-- **Details**: Critical for resolving customer checkout issues and recovering abandoned sales
-
-### Cart Recovery and Assistance
-- **Use Case**: Proactive customer service - "Send payment links to customers who abandoned carts yesterday"
-- **Implementation**: 🔧 **PARTIALLY AVAILABLE** - Cart retrieval APIs exist, but would need cart search and customer contact capabilities
-- **Details**: Combines cart analytics with direct customer outreach for sales recovery
-
-### Custom Order Creation
-- **Use Case**: Manual order processing - "Create an order for this customer with these specific products and pricing"
-- **Implementation**: ❌ **NOT IMPLEMENTED** - Would require order creation APIs with custom pricing
-- **Details**: Essential for B2B scenarios, custom quotes, phone orders, and special pricing arrangements
-
-### Cart Transfer and Sharing
-- **Use Case**: Multi-device shopping - "Transfer this customer's cart from mobile to desktop" or "Share this cart with another family member"
-- **Implementation**: ❌ **NOT IMPLEMENTED** - Would require cart sharing and transfer mechanisms
-- **Details**: Improves customer experience across devices and supports collaborative shopping
-
-### Order Modification Assistance
-- **Use Case**: Customer service - "This customer wants to add an item to their order before shipping"
-- **Implementation**: ❌ **NOT IMPLEMENTED** - Would require order modification APIs
-- **Details**: Common customer service scenario requiring order updates before fulfillment
-
-### Gift Card Creation and Delivery
-- **Use Case**: Customer service & sales - "Create a $50 gift card for Sarah's birthday and email it to her"
-- **Implementation**: 🔧 **API AVAILABLE** - Gift card creation and email APIs exist, MCP tools not yet implemented
-- **Details**: Useful for customer service recovery, promotional campaigns, and direct gift card sales
+| Use Case | Implementation | Tool/API | Details |
+|----------|----------------|----------|---------|
+| Customer service - "Create a cart for this customer and send them a payment link" | 🔧 **API AVAILABLE** | Cart creation and payment link APIs | MCP tools not yet implemented; useful for phone orders, custom quotes |
+| Customer assistance - "A customer says they can't complete checkout - show me their cart" | 🔧 **API AVAILABLE** | Cart retrieval and customer identification APIs | MCP tools not yet implemented; critical for resolving checkout issues |
+| Proactive customer service - "Send payment links to customers who abandoned carts yesterday" | 🔧 **PARTIALLY AVAILABLE** | Cart retrieval APIs + search capabilities needed | Combines cart analytics with direct customer outreach |
+| Manual order processing - "Create an order for this customer with these specific products and pricing" | ❌ **NOT IMPLEMENTED** | Order creation APIs with custom pricing | Essential for B2B scenarios, custom quotes, phone orders |
+| Multi-device shopping - "Transfer this customer's cart from mobile to desktop" | ❌ **NOT IMPLEMENTED** | Cart sharing and transfer mechanisms | Improves customer experience across devices |
+| Customer service - "This customer wants to add an item to their order before shipping" | ❌ **NOT IMPLEMENTED** | Order modification APIs | Common customer service scenario requiring order updates |
+| Customer service & sales - "Create a $50 gift card for Sarah's birthday and email it to her" | 🔧 **API AVAILABLE** | Gift card creation and email APIs | MCP tools not yet implemented; useful for service recovery, promotions |
 
 ## Customer Service & Management
 
-### Customer Order History
-- **Use Case**: Customer service - "Show me all orders for customer john@example.com to understand their purchase history"
-- **Implementation**: 🔧 **API AVAILABLE** - Customer order lookup APIs exist, MCP tools not yet implemented
-- **Details**: Essential for personalized customer service, issue resolution, and relationship building
-
-### Customer Profile Management
-- **Use Case**: Account management - "What's this customer's total lifetime value and order patterns?"
-- **Implementation**: 🔧 **PARTIALLY AVAILABLE** - Can retrieve order history, but lifetime value calculations need implementation
-- **Details**: Combines order history with calculated metrics for complete customer insights
+| Use Case | Implementation | Tool/API | Details |
+|----------|----------------|----------|---------|
+| Customer service - "Show me all orders for customer john@example.com" | 🔧 **API AVAILABLE** | Customer order lookup APIs | MCP tools not yet implemented; essential for personalized service |
+| Account management - "What's this customer's total lifetime value and order patterns?" | 🔧 **PARTIALLY AVAILABLE** | Order history APIs + calculations needed | Can retrieve order history, but lifetime value calculations need implementation |
 
 ## Financial Management
 
-### Revenue Analysis
-- **Use Case**: Financial planning - "What are my quarterly sales figures?"
-- **Implementation**: ✅ **IMPLEMENTED** - `get_total_revenue_analytics` tool
-- **Details**: Provides revenue totals with date range filtering for tax and financial reporting
-
-### Cash Flow Analysis
-- **Use Case**: Cash flow planning - "Do I have enough cash to make that big purchase?"
-- **Implementation**: ❌ **NOT IMPLEMENTED** - Beyond Commerce scope
-- **Details**: Would require integration with accounting systems
-
-### Product Profitability
-- **Use Case**: Profitability analysis - "Which products make me the most money?"
-- **Implementation**: ❌ **NOT IMPLEMENTED** - Would require cost data integration
-- **Details**: Commerce tracks revenue but not product costs or profit margins
-
-### Tax Reporting
-- **Use Case**: Tax preparation - "Show me all taxable transactions for this period"
-- **Implementation**: ⚠️ **PARTIALLY AVAILABLE** - Through order search
-- **Details**: Can search orders by date range, but dedicated tax reporting endpoints not available
-
-### Payment Reconciliation
-- **Use Case**: Accounting reconciliation - "Match these payment gateway transactions with orders"
-- **Implementation**: ❌ **NOT IMPLEMENTED** - Would require payment provider integration
-- **Details**: Commerce stores payment references but reconciliation requires external payment data
+| Use Case | Implementation | Tool/API | Details |
+|----------|----------------|----------|---------|
+| Financial planning - "What are my quarterly sales figures?" | ✅ **IMPLEMENTED** | `get_total_revenue_analytics` | Provides revenue totals with date range filtering for tax and financial reporting |
+| Cash flow planning - "Do I have enough cash to make that big purchase?" | ❌ **NOT IMPLEMENTED** | Beyond Commerce scope | Would require integration with accounting systems |
+| Profitability analysis - "Which products make me the most money?" | ❌ **NOT IMPLEMENTED** | Cost data integration needed | Commerce tracks revenue but not product costs or profit margins |
+| Tax preparation - "Show me all taxable transactions for this period" | ⚠️ **PARTIALLY AVAILABLE** | Order search by date range | Can search orders by date range, but no dedicated tax reporting endpoints |
+| Accounting reconciliation - "Match these payment gateway transactions with orders" | ❌ **NOT IMPLEMENTED** | Payment provider integration needed | Commerce stores payment references but reconciliation requires external data |
 
 ## Marketing & Growth
 
-### Discount Management
-- **Use Case**: Promotion planning - "Create a 20% off sale for September"
-- **Implementation**: 📋 **PLANNED** - Natural language discount creation
-- **Details**: `get_discounts_tool`, `get_discount_tool` for retrieval implemented, but `create_discount_tool` requires natural language parsing (see [Natural Language Discount Creation specification](technical-specs/natural-language-discount-creation.md))
-
-### Promotion Effectiveness
-- **Use Case**: Campaign analysis - "Did that last sale actually increase profits?"
-- **Implementation**: ⚠️ **LIMITED** - Through discount usage in order search
-- **Details**: Can search orders by discount codes, but no dedicated promotion analytics
-
-### Abandoned Cart Recovery
-- **Use Case**: Recovery opportunities - "Who can I follow up with to complete their purchase?"
-- **Implementation**: ✅ **IMPLEMENTED** - `get_abandoned_cart_conversion_rates_analytics` tool
-- **Details**: Provides abandoned cart metrics for recovery campaign planning
-
-### Customer Acquisition Analysis
-- **Use Case**: Marketing ROI - "How are people finding my store?"
-- **Implementation**: ❌ **NOT IMPLEMENTED** - Beyond Commerce scope
-- **Details**: Would require integration with web analytics and marketing platforms
-
-### Email Marketing Performance
-- **Use Case**: Email campaign effectiveness - "Which email campaigns drove the most sales?"
-- **Implementation**: ❌ **NOT IMPLEMENTED** - Beyond Commerce scope
-- **Details**: Would require integration with email marketing platforms
+| Use Case | Implementation | Tool/API | Details |
+|----------|----------------|----------|---------|
+| Promotion planning - "Create a 20% off sale for September" | 📋 **PLANNED** | Natural language discount creation | `get_discounts_tool`, `get_discount_tool` implemented; creation needs natural language parsing - see [Natural Language Discount Creation](technical-specs/natural-language-discount-creation.md) |
+| Campaign analysis - "Did that last sale actually increase profits?" | ⚠️ **LIMITED** | Order search by discount codes | Can search orders by discount codes, but no dedicated promotion analytics |
+| Recovery opportunities - "Who can I follow up with to complete their purchase?" | ✅ **IMPLEMENTED** | `get_abandoned_cart_conversion_rates_analytics` | Provides abandoned cart metrics for recovery campaign planning |
+| Marketing ROI - "How are people finding my store?" | ❌ **NOT IMPLEMENTED** | Beyond Commerce scope | Would require integration with web analytics and marketing platforms |
+| Email campaign effectiveness - "Which email campaigns drove the most sales?" | ❌ **NOT IMPLEMENTED** | Beyond Commerce scope | Would require integration with email marketing platforms |
 
 ## Operational Efficiency
 
-### Order Processing Performance
-- **Use Case**: Process improvement - "How quickly are we processing orders?"
-- **Implementation**: ⚠️ **LIMITED** - Through order status transitions
-- **Details**: Can analyze order status change timing through order search, but no dedicated performance metrics
-
-### Shipping Performance Analysis
-- **Use Case**: Shipping optimization - "Are my shipping costs reasonable?"
-- **Implementation**: ❌ **NOT IMPLEMENTED** - Would require shipping provider integration
-- **Details**: Commerce stores shipping selections but not performance or cost analysis
-
-### Team Productivity Metrics
-- **Use Case**: Team management - "How can I help my team be more productive?"
-- **Implementation**: ❌ **NOT IMPLEMENTED** - Beyond Commerce scope
-- **Details**: Would require time tracking and productivity measurement systems
+| Use Case | Implementation | Tool/API | Details |
+|----------|----------------|----------|---------|
+| Process improvement - "How quickly are we processing orders?" | ⚠️ **LIMITED** | Order status transitions analysis | Can analyze order status change timing through order search, but no dedicated performance metrics |
+| Shipping optimization - "Are my shipping costs reasonable?" | ❌ **NOT IMPLEMENTED** | Shipping provider integration needed | Commerce stores shipping selections but not performance or cost analysis |
+| Team management - "How can I help my team be more productive?" | ❌ **NOT IMPLEMENTED** | Beyond Commerce scope | Would require time tracking and productivity measurement systems |
 
 ## Implementation Status Summary
 
