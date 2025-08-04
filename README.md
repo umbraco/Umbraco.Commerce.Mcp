@@ -54,6 +54,7 @@ src/
 │   ├── discounts/              # Discount management tools
 │   ├── orders/                 # Order management tools
 │   ├── stores/                 # Store statistics and management
+│   ├── ...                     # Other features to come
 │   └── umbraco/users/          # User session management
 ├── common/                     # Shared utilities and types
 │   ├── mcp/tools/              # MCP tool framework
