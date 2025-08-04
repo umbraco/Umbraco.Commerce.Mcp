@@ -56,7 +56,7 @@ From a store owner perspective, here are the essential capabilities needed for d
 ### Product Quality & Return Analysis
 - **Use Case**: Quality control - "Which products have the highest return rates and should I investigate quality issues?"
 - **Implementation**: 📋 **PLANNED** - Would require new product return analytics API
-- **Details**: Critical for identifying quality problems, supplier issues, and customer satisfaction trends
+- **Details**: Critical for identifying quality problems, supplier issues, and customer satisfaction trends (see [Product Return Rate Analytics specification](technical-specs/product-return-rate-analytics.md))
 
 ### Customer Conversion Analysis
 - **Use Case**: Marketing effectiveness - "How well are we converting visitors to customers?"
