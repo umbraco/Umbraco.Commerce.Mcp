@@ -197,6 +197,7 @@ This project is guided by real-world use cases and requirements. Development doc
 
 - **[Use Cases](docs/use-cases.md)** - Store owner scenarios and essential MCP endpoints
 - **[Commerce API Improvements](docs/commerce-api-improvements.md)** - Proposed enhancements to Umbraco Commerce APIs for better AI integration
+- **[Project Considerations](docs/project-considerations.md)** - Strategic decisions and long-term project viability
 
 These documents help guide feature development and identify areas where Umbraco Commerce APIs may need enhancement to better support AI-driven interactions.
 
