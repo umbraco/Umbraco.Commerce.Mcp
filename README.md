@@ -152,6 +152,15 @@ npm run test:tools
 
 See the [mcp-server-tester documentation](https://github.com/steviec/mcp-server-tester) for more details on test configuration and options.
 
+## Development & Planning
+
+This project is guided by real-world use cases and requirements. Development documentation includes:
+
+- **[Use Cases](docs/use-cases.md)** - Store owner scenarios and essential MCP endpoints
+- **[Suggested Commerce API Improvements](docs/commerce-api-improvements.md)** - Proposed enhancements to Umbraco Commerce APIs for better AI integration
+
+These documents help guide feature development and identify areas where Umbraco Commerce APIs may need enhancement to better support AI-driven interactions.
+
 ## License
 
 This MCP server is MIT licensed. However, it requires Umbraco Commerce, which is a commercially licensed product by Umbraco A/S. You will need a valid Umbraco Commerce license to use this tool with a production Umbraco instance.
