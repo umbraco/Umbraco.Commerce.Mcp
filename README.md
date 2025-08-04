@@ -49,7 +49,7 @@ npm run inspect
 
 ```
 src/
-├── features/                    # Domain-organized features
+├── features/                   # Domain-organized features
 │   ├── analytics/              # Analytics and reporting tools
 │   ├── discounts/              # Discount management tools
 │   ├── orders/                 # Order management tools
