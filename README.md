@@ -5,7 +5,7 @@
 
 A Model Context Protocol (MCP) server that provides AI tools for interacting with Umbraco Commerce APIs. This server acts as a bridge between AI assistants and Umbraco Commerce functionality, enabling operations like order management, analytics, discount management, and user administration.
 
-## Quick Start
+## Getting Started
 
 ### Prerequisites
 
@@ -19,29 +19,80 @@ A Model Context Protocol (MCP) server that provides AI tools for interacting wit
 npm install
 ```
 
+### Authentication Setup
+
+The server uses OAuth2 client credentials flow with automatic token refresh:
+
+1. Create an API user in your Umbraco back-office following the [Umbraco API Users documentation](https://docs.umbraco.com/umbraco-cms/fundamentals/data/users/api-users)
+2. Ensure the API user has access to the Commerce/Settings sections
+3. Note the client ID and secret for configuration
+
 ### Configuration
 
-1. Create `.env` file from the example:
+1. Create `.env` file:
 ```bash
 cp .env.example .env
 ```
 
-2. Configure required environment variables:
+2. Configure environment variables:
 ```env
 UMBRACO_CLIENT_ID=your_oauth_client_id
 UMBRACO_CLIENT_SECRET=your_oauth_client_secret
 UMBRACO_BASE_URL=https://your-umbraco-site.com
 ```
 
-### Running the Server
-
+3. Build the server:
 ```bash
-# Build and start the MCP server
-npm run start
-
-# Start with MCP inspector for debugging
-npm run inspect
+npm run build
 ```
+
+## Using with Claude Desktop
+
+This MCP server is designed to work with Claude Desktop and other MCP-compatible clients. 
+
+### Claude Desktop Configuration
+
+1. **Add to Claude Desktop config**:
+   
+   Open your Claude Desktop configuration file:
+   - **macOS**: `~/Library/Application Support/Claude/claude_desktop_config.json`
+   - **Windows**: `%APPDATA%\Claude\claude_desktop_config.json`
+
+2. **Add the MCP server configuration**:
+```json
+{
+  "mcpServers": {
+    "umbraco-commerce": {
+      "command": "node",
+      "args": ["/path/to/Umbraco.Commerce.Mcp/build/index.js"],
+      "env": {
+        "UMBRACO_CLIENT_ID": "your_oauth_client_id",
+        "UMBRACO_CLIENT_SECRET": "your_oauth_client_secret", 
+        "UMBRACO_BASE_URL": "https://your-umbraco-site.com"
+      }
+    }
+  }
+}
+```
+
+3. **Restart Claude Desktop** to load the MCP server
+
+### Example Conversations
+
+Once configured, you can interact with your Umbraco Commerce store through Claude:
+
+- *"Show me recent orders from the last week"*
+- *"What products are running low on stock?"*
+- *"Create a 20% discount for everything in September"*
+- *"How many orders did we get yesterday?"*
+- *"Find orders from customers with email containing '@company.com'"*
+
+### Troubleshooting
+
+- Ensure your Umbraco instance is accessible from Claude Desktop
+- Verify your OAuth2 credentials have Commerce section access
+- Check the Claude Desktop logs for connection errors
+- Use `npm run inspect` for debugging the MCP server
 
 ## Development
 
@@ -80,6 +131,16 @@ npm run test:tools              # Test tools using YAML files
 npm run test:compliance         # Run MCP compliance tests
 ```
 
+### API Integration
+
+The project uses an auto-generated API client from Umbraco Commerce's Management API specification. To regenerate the client:
+
+```bash
+npm run generate:api
+```
+
+This requires a running Umbraco instance.
+
 ### Creating New Tools
 
 1. Create a tool file in the appropriate feature directory:
@@ -106,29 +167,7 @@ export default {
 
 2. Tools are automatically discovered from `src/features/*/tools/*{.,-}tool.{js,ts}` files
 
-### Creating New Resources
-
-TBC
-
-## Authentication
-
-The server uses OAuth2 client credentials flow with automatic token refresh. To set up authentication:
-
-1. Create an API user in your Umbraco back-office following the [Umbraco API Users documentation](https://docs.umbraco.com/umbraco-cms/fundamentals/data/users/api-users)
-2. Ensure the API user has access to the Commerce/Settings sections
-3. Use the client ID and secret in your `.env` configuration
-
-## API Integration
-
-The project uses an auto-generated API client from Umbraco Commerce's Management API specification. To regenerate the client:
-
-```bash
-npm run generate:api
-```
-
-This requires a running Umbraco instance.
-
-## Testing
+### Testing
 
 Testing is done using [mcp-server-tester](https://github.com/steviec/mcp-server-tester). Create YAML test files in the `tests/` directory:
 
@@ -152,7 +191,7 @@ npm run test:tools
 
 See the [mcp-server-tester documentation](https://github.com/steviec/mcp-server-tester) for more details on test configuration and options.
 
-## Development & Planning
+### Development & Planning
 
 This project is guided by real-world use cases and requirements. Development documentation includes:
 
