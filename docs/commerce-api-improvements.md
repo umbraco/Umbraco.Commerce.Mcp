@@ -47,3 +47,15 @@ While building this MCP server, we've identified several areas where Umbraco Com
 **Priority:** Medium - Important for inventory management use cases and store operations.
 
 **Details:** See [Low Stock Product Analytics](technical-specs/low-stock-product-analytics.md) for full API specification.
+
+### 4. Product Return Rate Analytics
+
+**Problem:** Commerce currently lacks visibility into product return patterns and quality issues. Store operators cannot easily identify which products have high return rates, understand why products are being returned, or track quality trends over time. This makes it difficult to manage product quality, evaluate suppliers, and optimize the product mix.
+
+**Proposed Solution:** Add a new analytics endpoint that provides comprehensive return rate analysis, including return percentages, return reasons, trend data, and financial impact. This would enable proactive quality management and data-driven business decisions.
+
+**Benefits:** Enables proactive quality control, supports supplier performance evaluation, provides early warning for quality issues, and helps optimize product mix based on customer satisfaction data.
+
+**Priority:** Medium-High - Critical for quality management, but requires foundational changes to return/refund process first.
+
+**Details:** See [Product Return Rate Analytics](technical-specs/product-return-rate-analytics.md) for full API specification.
