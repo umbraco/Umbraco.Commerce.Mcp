@@ -47,11 +47,11 @@ import { priceSchema } from "../../../common/types/price.js";
  * Maps contact information from DTO to domain model
  * Foundation mapper with no dependencies
  */
-function mapToContact(contact: OrderCustomerInfoDto): OrderContact {
+function mapToContact(dto: OrderCustomerInfoDto): OrderContact {
     return orderContactSchema.parse({
-        firstName: contact.firstName || null,
-        lastName: contact.lastName || null,
-        email: contact.email || null,
+        firstName: dto.firstName || null,
+        lastName: dto.lastName || null,
+        email: dto.email || null,
     });
 }
 
@@ -59,13 +59,13 @@ function mapToContact(contact: OrderCustomerInfoDto): OrderContact {
  * Maps address information from DTO to domain model
  * Foundation mapper with no dependencies
  */
-function mapToAddress(addressable: OrderBillingInfoDto | OrderShippingInfoDto): OrderAddress {
+function mapToAddress(dto: OrderBillingInfoDto | OrderShippingInfoDto): OrderAddress {
     return orderAddressSchema.parse({
-        addressLine1: addressable.addressLine1,
-        addressLine2: addressable.addressLine2,
-        city: addressable.city,
-        zipCode: addressable.zipCode,
-        countryIsoCode: addressable.country?.code || null,
+        addressLine1: dto.addressLine1,
+        addressLine2: dto.addressLine2,
+        city: dto.city,
+        zipCode: dto.zipCode,
+        countryIsoCode: dto.country?.code || null,
     });
 }
 
@@ -77,11 +77,11 @@ function mapToAddress(addressable: OrderBillingInfoDto | OrderShippingInfoDto): 
  * Maps company address information (extends basic address)
  * Depends on: mapToAddress
  */
-function mapToCompanyAddress(addressable: OrderBillingInfoDto | OrderShippingInfoDto): OrderCompanyAddress {
+function mapToCompanyAddress(dto: OrderBillingInfoDto | OrderShippingInfoDto): OrderCompanyAddress {
     return orderCompanyAddressSchema.parse({
-        ...mapToAddress(addressable),
-        companyName: addressable.companyName || null,
-        companyTaxCode: addressable.companyTaxCode || null,
+        ...mapToAddress(dto),
+        companyName: dto.companyName || null,
+        companyTaxCode: dto.companyTaxCode || null,
     });
 }
 
@@ -89,10 +89,10 @@ function mapToCompanyAddress(addressable: OrderBillingInfoDto | OrderShippingInf
  * Maps customer information from DTO to domain model
  * Depends on: mapToContact
  */
-function mapToOrderCustomer(customer: OrderCustomerInfoDto): OrderCustomer {
+function mapToOrderCustomer(dto: OrderCustomerInfoDto): OrderCustomer {
     return orderCustomerSchema.parse({
-        ...mapToContact(customer),
-        customerReference: customer.customerReference || null,
+        ...mapToContact(dto),
+        customerReference: dto.customerReference || null,
     });
 }
 
@@ -104,10 +104,10 @@ function mapToOrderCustomer(customer: OrderCustomerInfoDto): OrderCustomer {
  * Maps order billing information
  * Depends on: mapToCompanyAddress, mapToContact
  */
-function mapToOrderBillingInfo(billing: OrderBillingInfoDto): OrderBillingInfo {
+function mapToOrderBillingInfo(dto: OrderBillingInfoDto): OrderBillingInfo {
     return orderBillingInfoSchema.parse({
-        ...mapToCompanyAddress(billing),
-        contact: mapToContact(billing.contact || {}),
+        ...mapToCompanyAddress(dto),
+        contact: mapToContact(dto.contact || {}),
     });
 }
 
@@ -115,14 +115,14 @@ function mapToOrderBillingInfo(billing: OrderBillingInfoDto): OrderBillingInfo {
  * Maps order shipping information
  * Depends on: mapToCompanyAddress, mapToContact
  */
-function mapToOrderShippingInfo(shipping: OrderShippingInfoDto): OrderShippingInfo {
+function mapToOrderShippingInfo(dto: OrderShippingInfoDto): OrderShippingInfo {
     return orderShippingInfoSchema.parse({
-        ...mapToCompanyAddress(shipping),
-        sameAsBilling: shipping.sameAsBilling || false,
-        contact: mapToContact(shipping.contact || {}),
-        shippingMethod: shipping.shippingMethod?.alias || null,
-        shippingOption: shipping.shippingOption?.name || null,
-        totalPrice: mapToPrice(shipping.totalPrice!.value!),
+        ...mapToCompanyAddress(dto),
+        sameAsBilling: dto.sameAsBilling || false,
+        contact: mapToContact(dto.contact || {}),
+        shippingMethod: dto.shippingMethod?.alias || null,
+        shippingOption: dto.shippingOption?.name || null,
+        totalPrice: mapToPrice(dto.totalPrice!.value!),
     });
 }
 
@@ -130,10 +130,10 @@ function mapToOrderShippingInfo(shipping: OrderShippingInfoDto): OrderShippingIn
  * Maps order payment information
  * No dependencies on other mappers
  */
-function mapToOrderPaymentInfo(payment: OrderPaymentInfoDto): OrderPaymentInfo {
+function mapToOrderPaymentInfo(dto: OrderPaymentInfoDto): OrderPaymentInfo {
     return orderPaymentInfoSchema.parse({
-        paymentMethod: payment.paymentMethod?.alias || null,
-        totalPrice: mapToPrice(payment.totalPrice!.value!),
+        paymentMethod: dto.paymentMethod?.alias || null,
+        totalPrice: mapToPrice(dto.totalPrice!.value!),
     });
 }
 
@@ -141,23 +141,23 @@ function mapToOrderPaymentInfo(payment: OrderPaymentInfoDto): OrderPaymentInfo {
  * Maps an individual order line from DTO to domain model
  * No dependencies on other mappers
  */
-function mapToOrderLine(orderLine: OrderLineDto): OrderLine {
+function mapToOrderLine(dto: OrderLineDto): OrderLine {
     return orderLineSchema.parse({
-        id: orderLine.id!,
-        productReference: orderLine.productReference || null,
-        productVariantReference: orderLine.productVariantReference || null,
-        bundleId: orderLine.bundleId || null,
-        sku: orderLine.sku!,
-        name: orderLine.name!,
-        basePrice: mapToPrice(orderLine.basePrice!.value!),
-        unitPrice: mapToPrice(orderLine.unitPrice!.value!),
-        quantity: orderLine.quantity || 1,
-        totalPrice: mapToPrice(orderLine.totalPrice!.value!),
-        attributes: orderLine.attributes?.reduce((acc: Record<string, string>, attr) => {
+        id: dto.id!,
+        productReference: dto.productReference || null,
+        productVariantReference: dto.productVariantReference || null,
+        bundleId: dto.bundleId || null,
+        sku: dto.sku!,
+        name: dto.name!,
+        basePrice: mapToPrice(dto.basePrice!.value!),
+        unitPrice: mapToPrice(dto.unitPrice!.value!),
+        quantity: dto.quantity || 1,
+        totalPrice: mapToPrice(dto.totalPrice!.value!),
+        attributes: dto.attributes?.reduce((acc: Record<string, string>, attr) => {
             acc[attr.name!.name!] = attr.value!.name!;
             return acc;
         }, {}) || {},
-        properties: orderLine.properties || {},
+        properties: dto.properties || {},
     });
 }
 
@@ -169,14 +169,14 @@ function mapToOrderLine(orderLine: OrderLineDto): OrderLine {
  * Maps an OrderDto from the API to an OrderSummary for tool responses
  * Depends on: mapToOrderCustomer
  */
-export function mapToOrderSummary(order: OrderDto): OrderSummary {
+export function mapToOrderSummary(dto: OrderDto): OrderSummary {
     return orderSummarySchema.parse({
-        id: order.id!,
-        orderNumber: order.orderNumber || 'N/A',
-        customer: mapToOrderCustomer(order.customer!),
-        totalPrice: mapToPrice(order.totalPrice!.value!),
-        finalizedDate: order.finalizedDate!,
-        totalOrderLines: order.orderLines?.length || 0,
+        id: dto.id!,
+        orderNumber: dto.orderNumber || 'N/A',
+        customer: mapToOrderCustomer(dto.customer!),
+        totalPrice: mapToPrice(dto.totalPrice!.value!),
+        finalizedDate: dto.finalizedDate!,
+        totalOrderLines: dto.orderLines?.length || 0,
     });
 }
 
@@ -184,16 +184,16 @@ export function mapToOrderSummary(order: OrderDto): OrderSummary {
  * Maps an OrderDto to a full Order object including all related data
  * Depends on: mapToOrderSummary, mapToOrderBillingInfo, mapToOrderShippingInfo, mapToOrderPaymentInfo, mapToOrderLine
  */
-export function mapToOrder(order: OrderDto): Order {
+export function mapToOrder(dto: OrderDto): Order {
     return orderSchema.parse({
-        ...mapToOrderSummary(order),
-        status: order.orderStatus?.alias || 'unknown',
-        billing: mapToOrderBillingInfo(order.billing!),
-        shipping: mapToOrderShippingInfo(order.shipping!),
-        payment: mapToOrderPaymentInfo(order.payment!),
-        orderLines: order.orderLines?.map(mapToOrderLine) || [],
-        discountCodes: order.discountCodes?.map(appliedDiscountCode => appliedDiscountCode.code) || [],
-        tags: order.tags || [],
-        properties: order.properties || {},
+        ...mapToOrderSummary(dto),
+        status: dto.orderStatus?.alias || 'unknown',
+        billing: mapToOrderBillingInfo(dto.billing!),
+        shipping: mapToOrderShippingInfo(dto.shipping!),
+        payment: mapToOrderPaymentInfo(dto.payment!),
+        orderLines: dto.orderLines?.map(mapToOrderLine) || [],
+        discountCodes: dto.discountCodes?.map(appliedDiscountCode => appliedDiscountCode.code) || [],
+        tags: dto.tags || [],
+        properties: dto.properties || {},
     });
 }

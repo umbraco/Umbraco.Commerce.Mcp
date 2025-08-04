@@ -4,12 +4,12 @@ import { PriceDto } from "../../infrastructure/umbraco-commerce/index.js";
 /**
  * Maps a PriceDto from the API to a Price for tool responses
  * 
- * @param priceObj - The PriceDto object to map
+ * @param dto - The PriceDto object to map
  * @returns A Price object with value and currency
  */
-export function mapToPrice(priceObj: PriceDto): Price {
+export function mapToPrice(dto: PriceDto): Price {
     return priceSchema.parse({
-        value: priceObj.withTax,
-        currency: priceObj.currency!.code
+        value: dto.withTax,
+        currency: dto.currency!.code
     });
 }

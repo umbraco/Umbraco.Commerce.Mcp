@@ -4,14 +4,14 @@ import { OrderStatus, orderStatusSchema } from "./order-status.js";
 /**
  * Maps an OrderStatusDto to the OrderStatus domain model
  *
- * @param orderStatus - The OrderStatusDto to map
+ * @param dto - The OrderStatusDto to map
  * @returns The mapped OrderStatus domain model
  */
-export function mapToOrderStatus(orderStatus: OrderStatusDto): OrderStatus {
+export function mapToOrderStatus(dto: OrderStatusDto): OrderStatus {
     return orderStatusSchema.parse({
-        id: orderStatus.id!,
-        alias: orderStatus.alias!,
-        name: orderStatus.name!,
-        color: orderStatus.color || null,
+        id: dto.id!,
+        alias: dto.alias!,
+        name: dto.name!,
+        color: dto.color || null,
     });
 }
