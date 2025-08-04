@@ -18,7 +18,7 @@ While building this MCP server, we've identified several areas where Umbraco Com
 
 **Priority:** High - Current blocker for scalable AI integration.
 
-**Details:** See [Advanced Filters Discoverability](advanced-filters-discoverability.md) for full technical specification.
+**Details:** See [Advanced Filters Discoverability](technical-specs/advanced-filters-discoverability.md) for full technical specification.
 
 ### 2. Natural Language Discount Creation
 
@@ -34,4 +34,16 @@ While building this MCP server, we've identified several areas where Umbraco Com
 
 **Priority:** Medium - Would significantly improve AI usability for discount management.
 
-**Details:** See [Natural Language Discount Creation](natural-language-discount-creation.md) for full technical specification and implementation approaches.
+**Details:** See [Natural Language Discount Creation](technical-specs/natural-language-discount-creation.md) for full technical specification and implementation approaches.
+
+### 3. Low Stock Product Analytics
+
+**Problem:** Commerce has endpoints for fetching individual product stock levels, but no efficient way to identify products with low stock across the entire catalog. This makes inventory management and restocking decisions time-consuming as it requires checking each product individually.
+
+**Proposed Solution:** Add a new analytics endpoint that returns a list of products below a specified stock threshold. This would enable efficient identification of products needing restocking attention.
+
+**Benefits:** Enables proactive inventory management, reduces time spent on stock monitoring, supports automated restocking workflows, and provides essential data for AI-driven inventory insights.
+
+**Priority:** Medium - Important for inventory management use cases and store operations.
+
+**Details:** See [Low Stock Product Analytics](technical-specs/low-stock-product-analytics.md) for full API specification.
