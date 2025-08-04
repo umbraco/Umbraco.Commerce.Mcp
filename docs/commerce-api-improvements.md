@@ -62,7 +62,7 @@ Example: ["customerFirstName:mike", "tags:dispatched", "placedAfter:2025-01-01T1
 Extend the existing advanced filters endpoint to include usage metadata:
 
 ```http
-GET /umbraco/commerce/orders/advanced-filters
+GET /umbraco/commerce/management/api/v1/orders/advanced-filters
 ```
 
 **Current Response:**
