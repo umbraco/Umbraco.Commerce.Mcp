@@ -19,7 +19,7 @@ export async function registerTools(context: ToolRegistrationContext): Promise<v
 }
 
 export async function discoverTools(): Promise<ToolDefinition<any>[]> {
-    const toolsDir = path.resolve(__dirname, '../../../domains');
+    const toolsDir = path.resolve(__dirname, '../../../features');
     const pattern = '**/*{.,-}tool.{js,ts}';
     
     const toolFiles = await glob(pattern, { 
