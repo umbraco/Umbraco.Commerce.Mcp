@@ -1,0 +1,81 @@
+name: $(TeamProject)_$(Build.DefinitionName)_$(SourceBranchName)_$(Date:yyyyMMdd)$(Rev:.r)
+
+trigger:
+  branches:
+    include: 
+      - dev
+      - release/*
+      - hotfix/*
+      - support/*
+      - feature/*
+  tags:
+    include:
+      - release-*
+
+stages: 
+  - stage: Build
+    jobs:
+      - job: Build
+        variables:
+        - group: "dependency-track"
+
+        pool: 
+          vmImage: ubuntu-latest
+        steps:
+          # Checkout source
+          - checkout: self
+
+          # Setup Node.js for frontend SBOM
+          - task: NodeTool@0
+            displayName: Setup Node.js
+            inputs:
+              versionSpec: '22.x'
+
+          # Generate and upload frontend SBOM only
+          - script: |
+              if [ -f "package.json" ]; then
+                npm install --save-dev @cyclonedx/cyclonedx-npm
+                mkdir -p "$(Build.ArtifactStagingDirectory)/sbom"
+                npx @cyclonedx/cyclonedx-npm -o "$(Build.ArtifactStagingDirectory)/sbom/bom-frontend.xml"
+                echo "Frontend SBOM generated successfully"
+              else
+                echo "No package.json found, skipping frontend SBOM generation."
+                exit 1
+              fi
+            displayName: 'Generate SBOM for Node.js frontend'
+
+          - script: |
+              if [ -f "$(Build.ArtifactStagingDirectory)/sbom/bom-frontend.xml" ]; then
+                # Get project version from package.json
+                PROJECT_VERSION=$(node -p "require('./package.json').version" 2>/dev/null || echo "$(Build.SourceBranchName)")
+                
+                # Get last segment of repository name (remove org/owner part)
+                PROJECT_NAME=$(echo "$(Build.Repository.Name)" | awk -F'/' '{print $NF}')
+                
+                echo "Project Name: $PROJECT_NAME"
+                echo "Project Version: $PROJECT_VERSION"
+                
+                curl --fail-with-body -v -i -w "\nHTTP Status: %{http_code}\n" \
+                  -X POST "$(DT_BASE_URL)/api/v1/bom" \
+                  -H "X-Api-Key: $(DT_API_KEY)" \
+                  -H "accept: application/json" \
+                  -H "Content-Type: multipart/form-data" \
+                  -F "autoCreate=true" \
+                  -F "projectName=$PROJECT_NAME" \
+                  -F "projectVersion=$PROJECT_VERSION" \
+                  -F "bom=@$(Build.ArtifactStagingDirectory)/sbom/bom-frontend.xml"
+                echo "Frontend SBOM uploaded successfully"
+              else
+                echo "No frontend SBOM to upload."
+                exit 1
+              fi
+            displayName: 'Upload frontend SBOM to Dependency-Track'
+            env:
+              DT_API_KEY: $(DT_API_KEY)
+              DT_BASE_URL: $(DT_BASE_URL)
+
+          - task: PublishPipelineArtifact@1
+            displayName: 'Publish frontend SBOM Artifact'
+            inputs:
+              targetPath: $(Build.ArtifactStagingDirectory)/sbom
+              artifactName: frontend-SBOM
