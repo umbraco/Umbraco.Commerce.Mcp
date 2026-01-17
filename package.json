@@ -28,7 +28,7 @@
     "@modelcontextprotocol/sdk": "^1.17.0"
   },
   "devDependencies": {
-    "@hey-api/openapi-ts": "^0.80.1",
+    "@hey-api/openapi-ts": "^0.90.4",
     "@modelcontextprotocol/inspector": "^0.16.2",
     "@types/glob": "^8.1.0",
     "@types/node": "^24.1.0",
