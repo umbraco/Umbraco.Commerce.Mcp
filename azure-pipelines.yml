@@ -43,6 +43,7 @@ stages:
                 exit 1
               fi
             displayName: 'Generate SBOM for Node.js frontend'
+            continueOnError: true
 
           - script: |
               if [ -f "$(Build.ArtifactStagingDirectory)/sbom/bom-frontend.xml" ]; then
@@ -70,12 +71,14 @@ stages:
                 exit 1
               fi
             displayName: 'Upload frontend SBOM to Dependency-Track'
+            continueOnError: true
             env:
               DT_API_KEY: $(DT_API_KEY)
               DT_BASE_URL: $(DT_BASE_URL)
 
           - task: PublishPipelineArtifact@1
             displayName: 'Publish frontend SBOM Artifact'
+            continueOnError: true
             inputs:
               targetPath: $(Build.ArtifactStagingDirectory)/sbom
               artifactName: frontend-SBOM
