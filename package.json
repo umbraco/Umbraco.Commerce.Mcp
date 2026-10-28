@@ -13,10 +13,11 @@
     "inspect": "npm run build && dotenv -e .env -- mcp-inspector node build/index.js",
     "generate:api": "dotenv -e .env -- openapi-ts --file openapi-ts.config.js",
     "test:tools": "npm run build && dotenv -e .env -- mcp-server-tester tools tests/search-orders-test.yaml --server-config server-config.json",
+    "test:unit": "npm run build && node --test tests/*.test.mjs",
     "test:compliance": "npm run build && dotenv -e .env -- mcp-server-tester compliance --server-config server-config.json"
   },
   "engines": {
-    "node": ">=22.0.0"
+    "node": "^22.23.4 || ^24.22.1 || >=26.12.1"
   },
   "files": [
     "build"
