@@ -5,9 +5,13 @@ import { createUmbracoAuthClientPlugin } from "./infrastructure/plugins/umbraco-
 import { envSchema } from "./common/types/env.js";
 import { sessionService } from "./common/session/services/session-service.js";
 import { registerTools } from "./common/mcp/tools/tool-registrar.js";
+import { checkNodeVersion } from "./common/node-version-check.js";
 
 // The main execution loop
 const main = async () => {
+
+    // Warn if Node.js is affected by CVE-2026-111497
+    checkNodeVersion();
     
     // Validate environment variables
     const env = envSchema.parse(process.env)

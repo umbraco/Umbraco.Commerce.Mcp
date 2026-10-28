@@ -9,7 +9,7 @@ A Model Context Protocol (MCP) server that provides AI tools for interacting wit
 
 ### Prerequisites
 
-- Node.js >= 22.0.0
+- Node.js 22.23.4+, 24.22.1+ or 26.12.1+. Earlier releases are affected by [CVE-2026-111497](https://nodejs.org/en/blog/vulnerability/october-2026-security-releases) (Brotli decoder out-of-bounds write), which Node's built-in `fetch` reaches when it decompresses a Brotli response from Umbraco. Upgrading Node.js is the only fix; on an affected version the server prints a warning to stderr at startup.
 - Running Umbraco instance with Commerce
 - OAuth2 client credentials for Umbraco back-office API access
 
